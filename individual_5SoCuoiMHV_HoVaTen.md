@@ -1,99 +1,121 @@
-# Member Role Report: Day 9 Multi-Agent A2A
+# Member Role Report — Day 9: Multi Agent A2A
 
-## 1. Thong tin ca nhan
+> Mỗi thành viên trong nhóm tự hoàn thành mẫu này để báo cáo đúng vai trò, phần việc và mức hiểu của mình. Không sao chép nguyên báo cáo chung hoặc báo cáo của thành viên khác. Thay nội dung trong dấu `[ ]` và xóa các dòng hướng dẫn không cần thiết trước khi nộp.
 
-| Thong tin | Noi dung |
-| --- | --- |
-| Ho va ten | HoVaTen can cap nhat |
-| MSSV | 5SoCuoiMHV can cap nhat |
-| Khoa/Lop | K3 |
-| Vai tro chinh | Pipeline, policy agent va verifier |
-| Ngay hoan thanh | 2026-08-05 |
+## 1. Thông tin cá nhân
 
-## 2. Vai tro va pham vi cong viec
+| Thông tin       | Nội dung     |
+| --------------- | ------------ |
+| Họ và tên       | [Họ và tên]  |
+| MSSV            | [MSSV]       |
+| Khóa/Lớp        | [K3]         |
+| Vai trò chính   | [Vai trò]    |
+| Ngày hoàn thành | [YYYY-MM-DD] |
 
-| Module/deliverable | File/ham phu trach | Input nhan vao | Output ban giao | Trang thai |
-| --- | --- | --- | --- | --- |
-| Multi-agent pipeline | `scripts/resolve_cases.py` | 50 file `input/EC_*.json`, 3 CSV chinh: orders, items, payments | 50 file `output/EC_*.json` | Hoan thanh |
-| Trace va metadata | `scripts/resolve_cases.py`, `trace.jsonl`, `metadata.json` | Handoff cua tung agent | Trace 50 case, thong tin model/runtime | Hoan thanh |
-| Kien truc he thong | `architecture.md` | Policy trong README va thiet ke pipeline | Mo ta agent, vai tro, handoff, verifier | Hoan thanh |
+## 2. Vai trò và phạm vi công việc
 
-## 3. Ket qua theo vai tro
+### Phần việc sở hữu
 
-| Nhiem vu | Artifact lien quan | Ket qua ban giao | Cach xac minh |
-| --- | --- | --- | --- |
-| Sinh output theo schema | `output/EC_001.json` den `output/EC_050.json` | Du 50 JSON, moi file khop ten input | `(Get-ChildItem output -Filter EC_*.json).Count` tra ve 50 |
-| Ap dung policy theo thu tu uu tien | `scripts/resolve_cases.py` | Phan loai 6 issue trong README | `python scripts\resolve_cases.py` in issue distribution |
-| Dong goi bai nop | `output.zip` | Zip chi chua 50 JSON output | `python -m zipfile -l output.zip` |
+| Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao   | Trạng thái                            |
+| ------------------ | ------------------ | -------------- | ----------------- | ------------------------------------- |
+| [Phần việc]        | [File/hàm]         | [Input]        | [Output/artifact] | [Hoàn thành/Một phần/Chưa hoàn thành] |
+| [Phần việc]        | [File/hàm]         | [Input]        | [Output/artifact] | [Hoàn thành/Một phần/Chưa hoàn thành] |
 
-Artifact chinh la bo 50 ket qua trong `output/`, kem `trace.jsonl` de giai thich quy trinh xu ly tung case.
+Chỉ nhận ownership cho phần bạn trực tiếp thực hiện. Liên hệ rõ phần việc của bạn với đầu vào, đầu ra và các thành viên phụ thuộc vào phần đó.
 
-## 4. Giai thich ky thuat
+### Việc hỗ trợ ngoài phạm vi chính
 
-### Van de can giai quyet
+| Hoạt động                 | Thành viên/module được hỗ trợ | Kết quả                 |
+| ------------------------- | ----------------------------- | ----------------------- |
+| [Debug/tích hợp/tài liệu] | [Tên hoặc module]             | [Kết quả và bằng chứng] |
 
-Moi khieu nai chi co `claimed_order_id`, trong khi ket luan can doi chieu trang thai order, moc seller ban giao, ngay giao thuc te, tong item/freight va cac dong payment. Pipeline can tao ket qua co evidence ID hop le va so tien refund dung policy.
+## 3. Kết quả theo vai trò
 
-### Cach trien khai
+| Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao          | Cách xác minh   |
+| --------------------- | --------------------------- | ------------------------- | --------------- |
+| [Mô tả cụ thể]        | [Đường dẫn file]            | [Artifact/metrics/report] | [Lệnh/artifact] |
+| [Mô tả cụ thể]        | [Đường dẫn file]            | [Artifact/metrics/report] | [Lệnh/artifact] |
 
-He thong dung cac class agent rieng:
+Nêu một output cụ thể mà phần việc của bạn tạo ra hoặc giúp xác minh:
 
-- `OrderSellerAgent` doc order/item, xac dinh seller va item co `order_delivered_carrier_date > shipping_limit_date`.
-- `PaymentAgent` tinh tong tien va doi soat split payment voi sai so 0.10 BRL.
-- `DeliveryAgent` so sanh ngay giao thuc te voi ngay giao uoc tinh.
-- `PolicyAgent` ap dung 6 rule theo thu tu uu tien trong README.
-- `VerifierAgent` tao schema output, gioi han entity/evidence va lam tron tien 2 chu so.
+[Mô tả artifact, metric, report hoặc kết quả tích hợp.]
 
-### Input, output va contract
+## 4. Giải thích phần kỹ thuật đã thực hiện
 
-| Thanh phan | Mo ta |
-| --- | --- |
-| Input | `input/EC_*.json`, `olist_orders_dataset.csv`, `olist_order_items_dataset.csv`, `olist_order_payments_dataset.csv` |
-| Output | JSON theo schema README trong `output/`, trace JSONL, metadata JSON |
-| Module phu thuoc | Python 3.12 standard library: `csv`, `json`, `decimal`, `zipfile` |
-| Module su dung output | Verifier va zip packager |
-| Dieu kien loi can xu ly | Don khong co item row, nhieu payment row, nhieu item, order canceled/unavailable da thanh toan |
+### Vấn đề cần giải quyết
 
-### Cach xac minh
+[Phần của bạn giải quyết vấn đề gì trong pipeline?]
 
-```powershell
-python scripts\resolve_cases.py
-(Get-ChildItem output -Filter EC_*.json).Count
-python -m zipfile -l output.zip
+### Cách triển khai
+
+[Mô tả thuật toán, quy tắc dữ liệu, orchestration hoặc quyết định chính. Không chỉ chép lại tên hàm.]
+
+### Input, output và contract
+
+| Thành phần              | Mô tả                                  |
+| ----------------------- | -------------------------------------- |
+| Input                   | [Schema, artifact hoặc tham số]        |
+| Output                  | [Schema, artifact hoặc giá trị trả về] |
+| Module phụ thuộc        | [Module/file liên quan]                |
+| Module sử dụng output   | [Module/file liên quan]                |
+| Điều kiện lỗi cần xử lý | [Trường hợp thực tế]                   |
+
+### Cách xác minh
+
+```bash
+[Ghi lệnh thực tế đã chạy]
 ```
 
-- Ket qua mong doi: co 50 output JSON, trace 50 dong, zip chi chua `EC_001.json` den `EC_050.json`.
-- Ket qua thuc te: script chay thanh cong, dem output tra ve 50, zip list hien 50 file JSON.
-- Artifact/log: `output/`, `output.zip`, `trace.jsonl`, `metadata.json`.
+- **Kết quả mong đợi:** [Mô tả.]
+- **Kết quả thực tế:** [Mô tả.]
+- **Artifact/log:** [Đường dẫn; không chứa secret.]
 
-## 5. Quyet dinh ky thuat quan trong
+## 5. Một quyết định kỹ thuật quan trọng
 
-- Boi canh: README yeu cau multi-agent nhung policy co dieu kien ro rang va du lieu CSV co cau truc.
-- Phuong an can nhac: dung OpenAI proprietary model khong cong bo parameter, hoac dung OpenRouter voi open-weight model co size ro.
-- Phuong an da chon: OpenRouter Policy Agent voi `qwen/qwen-2.5-7b-instruct` va Verifier deterministic.
-- Ly do: model Qwen2.5 7B co size ro, thoa dieu kien duoi 10B, trong khi verifier van giu ket qua tai lap va khong tao evidence ngoai CSV.
-- Bang chung: `metadata.json` ghi provider OpenRouter, model `qwen/qwen-2.5-7b-instruct`, parameter size `7B`, `under_10b_parameters: true`; `trace.jsonl` ghi handoff that cua 50 case.
+- **Bối cảnh:** [Vấn đề hoặc lựa chọn cần quyết định.]
+- **Các phương án đã cân nhắc:** [Ít nhất hai phương án.]
+- **Phương án đã chọn:** [Lựa chọn.]
+- **Lý do:** [Trade-off về correctness, data quality, reproducibility, cost hoặc độ phức tạp.]
+- **Bằng chứng quyết định phù hợp:** [Metric, artifact hoặc kết quả thử nghiệm.]
 
-## 6. Loi hoac blocker da xu ly
+## 6. Một lỗi hoặc blocker đã xử lý
 
-- Trieu chung: file bao cao ban dau con template va noi dung khong khop bai Olist.
-- Buoc tai hien: mo `individual_5SoCuoiMHV_HoVaTen.md` va thay cau hoi ve Crossref/vector index.
-- Nguyen nhan goc: template tu bai lab khac chua duoc cap nhat.
-- Cach xu ly: viet lai bao cao theo pipeline Olist A2A va artifact that.
-- Cach xac minh: doc lai file bao cao, doi chieu voi `scripts/resolve_cases.py`, `output/`, `trace.jsonl`.
-- Dieu hoc duoc: artifact bao cao ca nhan can bam theo pipeline thuc te, khong chi giu template.
+- **Triệu chứng/lỗi nguyên văn:** [Che toàn bộ secret trước khi ghi.]
+- **Lệnh hoặc bước tái hiện:** [Lệnh/bước.]
+- **Nguyên nhân gốc:** [Root cause, không chỉ mô tả triệu chứng.]
+- **Cách xử lý:** [Thay đổi cụ thể.]
+- **Cách xác minh sau khi sửa:** [Lệnh và kết quả.]
+- **Điều học được:** [Bài học kỹ thuật.]
 
-## 7. Hieu biet ve luong end-to-end
+Nếu chưa xử lý xong:
 
-Du lieu di tu `input/EC_*.json` vao Coordinator bang `claimed_order_id`. Tu khoa nay, cac agent join sang `orders`, `order_items` va `order_payments`. Order/Seller Agent xac dinh trang thai va seller ban giao tre, Payment Agent doi soat tien, Delivery Agent xac dinh giao tre hay dung han. Policy Agent ap dung rule uu tien cua `EC_POLICY_V1`, sau do Verifier Agent tao schema output, evidence ID va so tien refund. Cuoi cung Coordinator ghi output JSON, trace, metadata va zip nop bai.
+- **Phạm vi bị ảnh hưởng:** [Module/artifact.]
+- **Những gì đã loại trừ:** [Các giả thuyết đã kiểm tra.]
+- **Bước tiếp theo:** [Hành động có thể kiểm chứng.]
 
-## 8. Cam ket cua thanh vien
+## 7. Hiểu biết về luồng end-to-end
 
-- [x] Noi dung bao cao phan anh dung phan viec va muc hieu cua toi.
-- [x] Toi co the giai thich luong end-to-end, khong chi module minh phu trach.
-- [x] Toi khong ghi "da chay thanh cong" cho phan chua duoc kiem chung.
-- [x] Bao cao khong chua `.env`, API key, token hoac secret.
-- [x] Bao cao nay khong phai ban sao nguyen van cua bao cao nhom hoac bao cao thanh vien khac.
+Giải thích ngắn gọn bằng lời của bạn:
 
-**Ho va ten:** HoVaTen can cap nhat
-**Ngay xac nhan:** 2026-08-05
+1. Dữ liệu đi từ Crossref đến vector index như thế nào?
+2. Evaluation set và ground-truth document IDs dùng để đo retrieval/answer quality ra sao?
+3. Quality checks khác freshness monitoring ở điểm nào trong bài lab?
+4. Vì sao phải dùng cùng test set cho baseline, corrupted và repaired?
+5. Repair được xem là thành công dựa trên artifact và metric nào?
+
+**Câu trả lời:**
+
+[Viết câu trả lời tại đây.]
+
+## 8. Cam kết của thành viên
+
+Đánh dấu sau khi tự kiểm tra:
+
+- [ ] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
+- [ ] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
+- [ ] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
+- [ ] Báo cáo không chứa `.env`, API key, token hoặc secret.
+- [ ] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
+
+**Họ và tên:** [Họ và tên]
+**Ngày xác nhận:** [YYYY-MM-DD]
