@@ -14,7 +14,7 @@ python -m unittest discover -v
 2. Chạy các agent và chỉ ghi output sau khi verifier pass.
 3. Thay lượt trace cũ bằng lượt mới tại `logging/trace.jsonl`.
 4. Cập nhật `logging/metadata.json`.
-5. Tạo `output.zip` chứa đúng 50 JSON và không chứa source/log.
+5. Tạo `output.zip` chứa đúng `output/EC_001.json` đến `output/EC_050.json` và không chứa source/log.
 
 `verify_outputs.py` tái tính độc lập toàn bộ quyết định, financial fields, affected entities và evidence IDs rồi so sánh với 50 file đã lưu.
 

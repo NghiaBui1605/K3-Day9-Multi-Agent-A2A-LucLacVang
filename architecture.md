@@ -55,7 +55,7 @@ Repository chỉ nạp 50 order được input tham chiếu, giữ dữ liệu t
 - Order không có item trả về entity item/seller rỗng và item/freight bằng `0.0`.
 - Evidence chỉ thuộc năm format cho phép và phải tồn tại trong tập row đã nạp.
 - `verify_outputs.py` tái chạy các agent rồi so sánh toàn bộ JSON đã lưu, không chỉ kiểm schema bề mặt.
-- `output.zip` được tạo bằng danh sách cố định `EC_001.json` đến `EC_050.json`, không đưa source, log hay file lạ vào gói nộp.
+- `output.zip` được tạo bằng danh sách cố định `output/EC_001.json` đến `output/EC_050.json`, không đưa source, log hay file lạ vào gói nộp.
 
 ## Cấu trúc mã nguồn
 

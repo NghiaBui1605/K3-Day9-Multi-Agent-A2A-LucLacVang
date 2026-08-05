@@ -64,5 +64,5 @@ def run(
     if zip_path is not None:
         with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
             for name in expected_names:
-                archive.write(output_dir / name, arcname=name)
+                archive.write(output_dir / name, arcname=f"output/{name}")
     return len(cases)

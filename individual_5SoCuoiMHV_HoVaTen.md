@@ -4,8 +4,8 @@
 
 | Thông tin | Nội dung |
 | --- | --- |
-| Họ và tên | Chưa được cung cấp - cần cập nhật trước khi nộp |
-| MSSV | Chưa được cung cấp - cần cập nhật trước khi nộp |
+| Họ và tên | Bùi Hữu Nghĩa |
+| MSSV | 2A202601880 |
 | Khóa/Lớp | K3 |
 | Vai trò chính | Thiết kế và triển khai pipeline multi-agent |
 | Ngày hoàn thành | 2026-08-05 |
@@ -25,7 +25,7 @@ Phần việc sở hữu gồm repository đọc CSV theo order, các agent đi�
 
 - Pipeline xử lý đủ 50 case và tạo đúng `EC_001.json` đến `EC_050.json`.
 - Trace có 300 event, tương ứng 6 event nhận/handoff/xác minh trên mỗi case.
-- `output.zip` có đúng 50 entry JSON, không có source, log hoặc file lạ.
+- `output.zip` có đúng 50 entry `output/EC_001.json` đến `output/EC_050.json`, không có source, log hoặc file lạ.
 - Phân bố kết quả: 8 canceled paid, 8 unavailable paid, 8 seller late, 8 logistics late, 9 valid split payment và 9 unsupported late claim.
 - Validator tái tính kết quả từ CSV và kiểm tra toàn bộ JSON đã lưu.
 
