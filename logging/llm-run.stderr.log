@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "F:\thucChienAI\K3-Day9-Multi-Agent-A2A\run_pipeline.py", line 34, in <module>
+    main()
+    ~~~~^^
+  File "F:\thucChienAI\K3-Day9-Multi-Agent-A2A\run_pipeline.py", line 22, in main
+    count = run(
+        args.input,
+    ...<4 lines>...
+        use_llm=not args.no_llm,
+    )
+  File "F:\thucChienAI\K3-Day9-Multi-Agent-A2A\ecommerce_disputes\runner.py", line 45, in run
+    result = coordinator.process(case)
+  File "F:\thucChienAI\K3-Day9-Multi-Agent-A2A\ecommerce_disputes\coordinator.py", line 77, in process
+    decision = self.policy_agent.decide(order, payment, delivery)
+  File "F:\thucChienAI\K3-Day9-Multi-Agent-A2A\ecommerce_disputes\agents.py", line 106, in decide
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Verifier rejected LLM policy proposal: 'unsupported_late_claim' != 'valid_split_payment'

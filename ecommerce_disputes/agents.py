@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
+from .llm import OpenAILLMClient
 from .models import (
     Decision,
     DeliveryFinding,
@@ -64,7 +66,50 @@ class DeliveryAgent:
 class PolicyAgent:
     name = "policy_agent"
 
+    def __init__(self, llm: OpenAILLMClient | None = None):
+        self.llm = llm
+        self.last_model_output: dict[str, Any] | None = None
+
     def decide(
+        self,
+        order: OrderFinding,
+        payment: PaymentFinding,
+        delivery: DeliveryFinding,
+    ) -> Decision:
+        expected = self._rule_decision(order, payment, delivery)
+        if self.llm is None:
+            return expected
+
+        facts = {
+            "order_status": order.order.status,
+            "delivered_late": delivery.delivered_late,
+            "violating_seller_ids": list(order.violating_seller_ids),
+            "payment_row_count": len(payment.payments),
+            "item_total_brl": float(payment.item_total),
+            "freight_total_brl": float(payment.freight_total),
+            "payment_total_brl": float(payment.payment_total),
+            "payment_reconciled_within_0_10_brl": payment.reconciled,
+        }
+        system = (
+            "You are the EC_POLICY_V1 Policy Agent. Classify only from the supplied facts. "
+            "Apply these rules in exact priority order: (1) canceled and paid => "
+            "canceled_order_paid; (2) unavailable and paid => unavailable_order_paid; "
+            "(3) delivered late with any violating seller => late_delivery_seller; "
+            "(4) delivered late without a violating seller => late_delivery_logistics; "
+            "(5) at least two payment rows and reconciled => valid_split_payment; "
+            "(6) not delivered late and reconciled => unsupported_late_claim. "
+            "Return JSON only with primary_issue and a short rationale. Never invent facts."
+        )
+        proposal = self.llm.json_completion(system, facts)
+        self.last_model_output = proposal
+        if proposal.get("primary_issue") != expected.primary_issue:
+            raise ValueError(
+                "Verifier rejected LLM policy proposal: "
+                f"{proposal.get('primary_issue')!r} != {expected.primary_issue!r}"
+            )
+        return expected
+
+    def _rule_decision(
         self,
         order: OrderFinding,
         payment: PaymentFinding,

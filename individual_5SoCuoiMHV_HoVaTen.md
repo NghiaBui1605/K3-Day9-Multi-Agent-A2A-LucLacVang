@@ -60,10 +60,10 @@ Coordinator gửi cùng order ID cho các agent domain. Order & Seller Agent xá
 ## 5. Quyết định kỹ thuật quan trọng
 
 - Bối cảnh: bài toán có policy tường minh, cần số tiền và evidence chính xác tuyệt đối.
-- Phương án cân nhắc: dùng LLM cho từng agent; hoặc agent xác định với typed handoff và rule engine.
-- Phương án chọn: agent xác định chạy local, model 0 tham số.
-- Lý do: tái lập, không tốn API, không lộ secret, không hallucinate ID và nằm dưới giới hạn 10B.
-- Bằng chứng: hai lần chạy có cùng 50 output nghiệp vụ; verifier độc lập pass toàn bộ file và unit test cover sáu nhánh.
+- Phương án cân nhắc: để LLM tự tạo toàn bộ output; hoặc LLM Policy Agent nằm giữa typed handoff và deterministic verifier.
+- Phương án chọn: model thật GPT-4o mini qua OpenAI đề xuất issue; verifier độc lập bác mọi proposal sai.
+- Lý do: tận dụng OpenAI key hiện có nhưng không giao phép tính tiền và evidence ID cho mô hình sinh tự do. Hạn chế: OpenAI không công bố số tham số nên không thể chứng minh điều kiện ≤10B.
+- Bằng chứng: unit test xác nhận model được gọi, proposal đúng được nhận và proposal sai bị verifier reject.
 
 ## 6. Lỗi/blocker đã xử lý
 

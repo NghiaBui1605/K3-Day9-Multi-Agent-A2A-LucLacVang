@@ -1,9 +1,10 @@
 {
-  "model": "deterministic-ec-policy-v1",
-  "parameter_count": 0,
-  "parameter_size": "0B",
-  "provider": "local",
-  "framework": "Python standard library; explicit multi-agent handoffs",
+  "model": "qwen/qwen-2.5-7b-instruct",
+  "parameter_count": 7000000000,
+  "parameter_size": "7B",
+  "provider": "OpenRouter",
+  "llm_enabled": true,
+  "framework": "Python standard library; LLM policy agent with deterministic verifier",
   "runtime": "Python 3.10+",
   "policy_version": "EC_POLICY_V1",
   "cases_processed": 50

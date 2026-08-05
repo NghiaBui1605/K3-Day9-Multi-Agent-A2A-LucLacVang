@@ -67,6 +67,30 @@ class PolicyAgentTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.agent.decide(*findings(reconciled=False, payment_total="120.00"))
 
+    def test_llm_proposal_is_used_and_verified(self) -> None:
+        class MatchingLLM:
+            called = False
+
+            def json_completion(self, system, user_payload):
+                self.called = True
+                return {
+                    "primary_issue": "late_delivery_logistics",
+                    "rationale": "Delivered after estimate; seller handoff was on time.",
+                }
+
+        llm = MatchingLLM()
+        decision = PolicyAgent(llm).decide(*findings(late=True))
+        self.assertTrue(llm.called)
+        self.assertEqual(decision.primary_issue, "late_delivery_logistics")
+
+    def test_verifier_rejects_wrong_llm_proposal(self) -> None:
+        class WrongLLM:
+            def json_completion(self, system, user_payload):
+                return {"primary_issue": "unsupported_late_claim", "rationale": "wrong"}
+
+        with self.assertRaisesRegex(ValueError, "rejected LLM policy proposal"):
+            PolicyAgent(WrongLLM()).decide(*findings(late=True))
+
 
 if __name__ == "__main__":
     unittest.main()

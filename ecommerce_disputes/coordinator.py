@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from .agents import DeliveryAgent, OrderSellerAgent, PaymentAgent, PolicyAgent
+from .llm import OpenAILLMClient
 from .models import CaseInput
 from .repository import OlistRepository
 from .settings import POLICY_VERSION
@@ -14,13 +15,18 @@ from .verifier import VerifierAgent
 class CoordinatorAgent:
     name = "coordinator_agent"
 
-    def __init__(self, repository: OlistRepository, trace: TraceWriter):
+    def __init__(
+        self,
+        repository: OlistRepository,
+        trace: TraceWriter,
+        llm: OpenAILLMClient | None = None,
+    ):
         self.repository = repository
         self.trace = trace
         self.order_agent = OrderSellerAgent()
         self.payment_agent = PaymentAgent()
         self.delivery_agent = DeliveryAgent()
-        self.policy_agent = PolicyAgent()
+        self.policy_agent = PolicyAgent(llm)
         self.verifier_agent = VerifierAgent()
 
     def process(self, case: CaseInput) -> dict:
@@ -79,6 +85,8 @@ class CoordinatorAgent:
                 "root_cause": decision.root_cause,
                 "refund_brl": float(decision.refund),
                 "action": decision.action,
+                "llm_used": self.policy_agent.llm is not None,
+                "llm_model_output": self.policy_agent.last_model_output,
             },
         )
         result = self.verifier_agent.assemble(case, order, payment, delivery, decision)

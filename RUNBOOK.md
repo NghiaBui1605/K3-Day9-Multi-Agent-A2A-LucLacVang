@@ -1,6 +1,14 @@
 # Hướng dẫn chạy và kiểm tra
 
-Yêu cầu duy nhất là Python 3.10 trở lên; pipeline không cần API key hoặc thư viện ngoài.
+Yêu cầu Python 3.10 trở lên và OpenAI API key. Model thật được cố định trong source là `gpt-4o-mini`; không đặt model name trong `.env`. OpenAI không công bố số tham số nên cấu hình này không chứng minh được giới hạn ≤10B của đề.
+
+Điền key vào `.env`:
+
+```dotenv
+OPENAI_API_KEY=sk-...
+```
+
+Không gửi hoặc commit file này. `.gitignore` đã loại trừ `.env`.
 
 ```bash
 python run_pipeline.py
@@ -22,7 +30,8 @@ python -m unittest discover -v
 
 ```bash
 python run_pipeline.py --input input --data data --output output --logging logging --zip output.zip
+python run_pipeline.py --no-llm  # chỉ dùng để chẩn đoán offline, không dùng cho lượt nộp
 python -m compileall -q ecommerce_disputes run_pipeline.py verify_outputs.py
 ```
 
-Nếu thiếu file input, order không tồn tại, sai policy version hoặc case không khớp nhánh policy nào, pipeline dừng với lỗi thay vì tạo output suy diễn.
+Nếu thiếu API key/input/order, sai policy, API lỗi, model trả sai rule hoặc case không khớp nhánh policy nào, pipeline dừng với lỗi thay vì tạo output suy diễn.
