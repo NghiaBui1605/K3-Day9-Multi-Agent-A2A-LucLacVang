@@ -31,7 +31,7 @@ POLICY_ISSUES = {
 }
 POLICY_ORDER = tuple(POLICY_ISSUES)
 CENT = Decimal("0.01")
-OPENROUTER_CACHE_VERSION = "qwen3-json-v1"
+OPENROUTER_CACHE_VERSION = "qwen3-json-v2-policy-evidence"
 
 
 def money(value: Decimal) -> float:
@@ -196,14 +196,33 @@ def build_assessment(case: dict[str, Any], facts: CaseFacts, issue: str) -> dict
         responsible = [{"party_type": "logistics_provider", "party_id": "LOGISTICS_PROVIDER"}]
         refund = facts.freight_total
 
-    # Keep the mandatory order and policy evidence even for orders with many
-    # rows.  Entity sets may hold five IDs, while the evidence list is capped
-    # at ten by the submission contract.
+    # Evidence is not the same as every entity related to an order. Select
+    # only rows that prove the active policy predicate or its financial
+    # resolution. For example, a seller master row contains location data and
+    # is useful only when that seller is the responsible party.
     evidence = [f"order:{order_id}"]
-    evidence.extend(f"item:{item_id}" for item_id in item_ids[:3])
-    evidence.extend(f"payment:{payment_id}" for payment_id in payment_ids[:3])
-    evidence.extend(f"seller:{seller_id}" for seller_id in seller_ids[:2])
-    evidence = evidence[:9] + [f"policy:{cause_code}"]
+    if issue in {"canceled_order_paid", "unavailable_order_paid"}:
+        supporting_ids = [f"payment:{payment_id}" for payment_id in payment_ids]
+    elif issue == "late_delivery_seller":
+        violating_item_ids = [
+            f"{order_id}:{item['order_item_id']}"
+            for item in prioritized_items
+            if item["seller_id"] in facts.late_seller_ids
+            and is_after(
+                facts.order["order_delivered_carrier_date"], item["shipping_limit_date"]
+            )
+        ]
+        supporting_ids = [f"item:{item_id}" for item_id in violating_item_ids]
+        supporting_ids.extend(f"payment:{payment_id}" for payment_id in payment_ids)
+        supporting_ids.extend(f"seller:{seller_id}" for seller_id in facts.late_seller_ids)
+    elif issue == "valid_split_payment":
+        supporting_ids = [f"payment:{payment_id}" for payment_id in payment_ids]
+        supporting_ids.extend(f"item:{item_id}" for item_id in item_ids)
+    else:
+        supporting_ids = [f"item:{item_id}" for item_id in item_ids]
+        supporting_ids.extend(f"payment:{payment_id}" for payment_id in payment_ids)
+    evidence.extend(supporting_ids[:8])
+    evidence.append(f"policy:{cause_code}")
 
     return {
         "case_id": case["case_id"],
@@ -299,6 +318,14 @@ def verifier_agent(result: dict[str, Any], facts: CaseFacts) -> None:
         raise ValueError("Evidence ID is not backed by a source row or policy")
     if f"order:{order_id}" not in submitted_evidence or f"policy:{cause_code}" not in submitted_evidence:
         raise ValueError("Order and policy evidence are required")
+    if assessment["primary_issue"] != "late_delivery_seller" and any(
+        evidence.startswith("seller:") for evidence in submitted_evidence
+    ):
+        raise ValueError("Seller evidence is only relevant to seller-responsible cases")
+    if assessment["primary_issue"] in {"canceled_order_paid", "unavailable_order_paid"} and any(
+        evidence.startswith("item:") for evidence in submitted_evidence
+    ):
+        raise ValueError("Item evidence does not prove cancellation or availability after payment")
 
     financial = result["financial_resolution"]
     expected_totals = {

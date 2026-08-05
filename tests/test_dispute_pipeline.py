@@ -64,6 +64,19 @@ class PipelineTests(unittest.TestCase):
             [f"payment:{order_id}:1", f"payment:{order_id}:2"], payment_evidence
         )
 
+    def test_evidence_is_relevant_to_the_selected_business_policy(self) -> None:
+        for input_file in sorted((ROOT / "input").glob("EC_*.json")):
+            case = json.loads(input_file.read_text(encoding="utf-8"))
+            result, _ = process_case(self.dataset, case)
+            issue = result["assessment"]["primary_issue"]
+            evidence = result["evidence_ids"]
+            with self.subTest(case=input_file.stem, issue=issue):
+                if issue != "late_delivery_seller":
+                    self.assertFalse(any(item.startswith("seller:") for item in evidence))
+                if issue in {"canceled_order_paid", "unavailable_order_paid"}:
+                    self.assertFalse(any(item.startswith("item:") for item in evidence))
+                    self.assertTrue(any(item.startswith("payment:") for item in evidence))
+
     def test_openrouter_mode_records_real_agent_contract_shape(self) -> None:
         class FakeClient:
             model = "qwen/qwen3-8b"
