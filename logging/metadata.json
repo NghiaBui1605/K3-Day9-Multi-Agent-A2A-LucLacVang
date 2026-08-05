@@ -1,0 +1,10 @@
+{
+  "model": "deterministic-ec-policy-v1",
+  "parameter_count": 0,
+  "parameter_size": "0B",
+  "provider": "local",
+  "framework": "Python standard library; explicit multi-agent handoffs",
+  "runtime": "Python 3.10+",
+  "policy_version": "EC_POLICY_V1",
+  "cases_processed": 50
+}
