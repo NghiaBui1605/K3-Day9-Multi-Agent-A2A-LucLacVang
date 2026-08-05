@@ -578,7 +578,7 @@ def write_zip():
         zip_path.unlink()
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(OUTPUT_DIR.glob("EC_*.json")):
-            archive.write(path, arcname=path.name)
+            archive.write(path, arcname=f"output/{path.name}")
 
 
 def main():
