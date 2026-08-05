@@ -40,6 +40,21 @@ class PipelineTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Evidence ID"):
             verifier_agent(result, facts)
 
+    def test_payment_entity_and_evidence_ids_are_canonically_sorted(self) -> None:
+        case = json.loads((ROOT / "input" / "EC_004.json").read_text(encoding="utf-8"))
+        result, _ = process_case(self.dataset, case)
+        order_id = case["customer_request"]["claimed_order_id"]
+        self.assertEqual(
+            [f"{order_id}:1", f"{order_id}:2"],
+            result["affected_entities"]["payment_ids"],
+        )
+        payment_evidence = [
+            evidence for evidence in result["evidence_ids"] if evidence.startswith("payment:")
+        ]
+        self.assertEqual(
+            [f"payment:{order_id}:1", f"payment:{order_id}:2"], payment_evidence
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

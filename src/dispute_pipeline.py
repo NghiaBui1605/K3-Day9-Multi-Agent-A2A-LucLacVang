@@ -166,7 +166,12 @@ def build_assessment(case: dict[str, Any], facts: CaseFacts, issue: str) -> dict
         key=lambda item: (item["seller_id"] not in facts.late_seller_ids, int(item["order_item_id"])),
     )
     visible_items = prioritized_items[:5]
-    visible_payments = facts.payments[:5]
+    # CSV row order is not part of the output contract.  Canonicalize payment
+    # IDs by their numeric sequence so entity/evidence lists are reproducible
+    # and match the natural payment:order_id:1, :2, ... ordering.
+    visible_payments = sorted(
+        facts.payments, key=lambda payment: int(payment["payment_sequential"])
+    )[:5]
     visible_seller_ids = sorted({item["seller_id"] for item in visible_items})
     seller_ids = (facts.late_seller_ids + [
         seller_id for seller_id in visible_seller_ids if seller_id not in facts.late_seller_ids
