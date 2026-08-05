@@ -1,0 +1,50 @@
+{
+  "case_id": "EC_039",
+  "assessment": {
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "00b4a910f64f24dbcac04fe54088a443"
+    ],
+    "item_ids": [
+      "00b4a910f64f24dbcac04fe54088a443:1"
+    ],
+    "seller_ids": [
+      "d50d79cb34e38265a8649c383dcffd48"
+    ],
+    "payment_ids": [
+      "00b4a910f64f24dbcac04fe54088a443:2",
+      "00b4a910f64f24dbcac04fe54088a443:1"
+    ]
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": []
+  },
+  "evidence_ids": [
+    "order:00b4a910f64f24dbcac04fe54088a443",
+    "item:00b4a910f64f24dbcac04fe54088a443:1",
+    "payment:00b4a910f64f24dbcac04fe54088a443:2",
+    "payment:00b4a910f64f24dbcac04fe54088a443:1",
+    "seller:d50d79cb34e38265a8649c383dcffd48",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 33.99,
+    "freight_total_brl": 16.6,
+    "payment_total_brl": 50.59,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "explain_valid_split_payment"
+  ]
+}

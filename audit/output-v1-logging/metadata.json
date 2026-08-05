@@ -1,0 +1,14 @@
+{
+  "model": {
+    "chatbot": "meta-llama/llama-3.2-3b-instruct",
+    "policy_agents": "none (deterministic rules)"
+  },
+  "parameter_size": {
+    "chatbot": "3B",
+    "policy_agents": "0B"
+  },
+  "framework": "Python standard library",
+  "runtime": "local Python 3",
+  "policy_version": "EC_POLICY_V1",
+  "processed_cases": 50
+}

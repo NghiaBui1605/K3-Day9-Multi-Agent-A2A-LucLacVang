@@ -1,0 +1,6 @@
+{
+  "oracle": "Independent implementation of README EC_POLICY_V1; not the hidden grader ground truth",
+  "case_count": 50,
+  "difference_count": 0,
+  "differences": []
+}

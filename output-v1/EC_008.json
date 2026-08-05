@@ -1,0 +1,53 @@
+{
+  "case_id": "EC_008",
+  "assessment": {
+    "primary_issue": "canceled_order_paid",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0197416059c0e56b5344bf2188066317"
+    ],
+    "item_ids": [
+      "0197416059c0e56b5344bf2188066317:1"
+    ],
+    "seller_ids": [
+      "87e24fc7052259b1f7f607d61c10d8be"
+    ],
+    "payment_ids": [
+      "0197416059c0e56b5344bf2188066317:1"
+    ]
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "ORDER_CANCELED_AFTER_PAYMENT",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "platform",
+        "party_id": "OLIST_PLATFORM"
+      }
+    ]
+  },
+  "evidence_ids": [
+    "order:0197416059c0e56b5344bf2188066317",
+    "item:0197416059c0e56b5344bf2188066317:1",
+    "payment:0197416059c0e56b5344bf2188066317:1",
+    "seller:87e24fc7052259b1f7f607d61c10d8be",
+    "policy:ORDER_CANCELED_AFTER_PAYMENT"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 399.9,
+    "freight_total_brl": 21.71,
+    "payment_total_brl": 421.61,
+    "recommended_refund_brl": 421.61
+  },
+  "resolution_actions": [
+    "issue_full_refund"
+  ]
+}
