@@ -1,0 +1,48 @@
+{
+  "case_id": "EC_048",
+  "assessment": {
+    "primary_issue": "unsupported_late_claim",
+    "case_status": "no_action",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "00048cc3ae777c65dbb7d2a0634bc1ea"
+    ],
+    "item_ids": [
+      "00048cc3ae777c65dbb7d2a0634bc1ea:1"
+    ],
+    "seller_ids": [
+      "6426d21aca402a131fc0a5d0960a3c90"
+    ],
+    "payment_ids": [
+      "00048cc3ae777c65dbb7d2a0634bc1ea:1"
+    ]
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "DELIVERY_WITHIN_ESTIMATE",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": []
+  },
+  "evidence_ids": [
+    "order:00048cc3ae777c65dbb7d2a0634bc1ea",
+    "item:00048cc3ae777c65dbb7d2a0634bc1ea:1",
+    "payment:00048cc3ae777c65dbb7d2a0634bc1ea:1",
+    "seller:6426d21aca402a131fc0a5d0960a3c90",
+    "policy:DELIVERY_WITHIN_ESTIMATE"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 21.9,
+    "freight_total_brl": 12.69,
+    "payment_total_brl": 34.59,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "reject_late_refund"
+  ]
+}

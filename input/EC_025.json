@@ -1,0 +1,11 @@
+{
+  "case_id": "EC_025",
+  "opened_at": "2018-10-18T00:00:00-03:00",
+  "customer_request": {
+    "language": "vi",
+    "message": "Vui lòng kiểm tra đơn hàng, nguyên nhân và quyền lợi phù hợp.",
+    "claimed_order_id": "00c00d5b36157595e21108ba1da2828f"
+  },
+  "policy_version": "EC_POLICY_V1",
+  "mock_case": true
+}
