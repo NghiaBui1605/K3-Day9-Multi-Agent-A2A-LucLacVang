@@ -3,9 +3,8 @@
   "opened_at": "2018-10-18T00:00:00-03:00",
   "customer_request": {
     "language": "vi",
-    "message": "Vui lòng kiểm tra đơn hàng, nguyên nhân và quyền lợi phù hợp.",
-    "claimed_order_id": "00024acbcdf0a6daa1e931b038114c75"
+    "message": "Tôi thấy đơn hàng có nhiều dòng thanh toán và lo rằng mình bị thu trùng. Hãy đối soát giúp tôi.",
+    "claimed_order_id": "2208f3a59d7067fe62c900692f5fdcaf"
   },
-  "policy_version": "EC_POLICY_V1",
-  "mock_case": true
+  "policy_version": "EC_POLICY_V1"
 }

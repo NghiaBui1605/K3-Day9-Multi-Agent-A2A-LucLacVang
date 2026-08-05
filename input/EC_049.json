@@ -3,9 +3,8 @@
   "opened_at": "2018-10-18T00:00:00-03:00",
   "customer_request": {
     "language": "vi",
-    "message": "Vui lòng kiểm tra đơn hàng, nguyên nhân và quyền lợi phù hợp.",
-    "claimed_order_id": "00054e8431b9d7675808bcb819fb4a32"
+    "message": "Tôi cho rằng đơn hàng được giao trễ. Hãy kiểm tra nguyên nhân và quyền lợi phù hợp.",
+    "claimed_order_id": "5b9e9502eca103a28ea22a94c65e3950"
   },
-  "policy_version": "EC_POLICY_V1",
-  "mock_case": true
+  "policy_version": "EC_POLICY_V1"
 }

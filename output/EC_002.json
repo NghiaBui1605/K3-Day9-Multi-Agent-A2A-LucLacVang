@@ -1,53 +1,50 @@
 {
   "case_id": "EC_002",
   "assessment": {
-    "primary_issue": "canceled_order_paid",
-    "case_status": "action_required",
+    "primary_issue": "unsupported_late_claim",
+    "case_status": "no_action",
     "confidence": 0.99
   },
   "affected_entities": {
     "order_ids": [
-      "00ae7a8b4936674ebb701d4a23719a79"
+      "8067c5e4834f3c0a3c8a4e921d65c5b1"
     ],
     "item_ids": [
-      "00ae7a8b4936674ebb701d4a23719a79:1"
+      "8067c5e4834f3c0a3c8a4e921d65c5b1:1",
+      "8067c5e4834f3c0a3c8a4e921d65c5b1:2"
     ],
     "seller_ids": [
-      "bf0d50a6410d487dc97d2baac0a8c0be"
+      "6973a06f484aacf400ece213dbf3d946"
     ],
     "payment_ids": [
-      "00ae7a8b4936674ebb701d4a23719a79:1"
+      "8067c5e4834f3c0a3c8a4e921d65c5b1:1"
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "ORDER_CANCELED_AFTER_PAYMENT",
+        "cause_code": "DELIVERY_WITHIN_ESTIMATE",
         "rank": 1
       }
     ],
-    "responsible_parties": [
-      {
-        "party_type": "platform",
-        "party_id": "OLIST_PLATFORM"
-      }
-    ]
+    "responsible_parties": []
   },
   "evidence_ids": [
-    "order:00ae7a8b4936674ebb701d4a23719a79",
-    "item:00ae7a8b4936674ebb701d4a23719a79:1",
-    "payment:00ae7a8b4936674ebb701d4a23719a79:1",
-    "seller:bf0d50a6410d487dc97d2baac0a8c0be",
-    "policy:ORDER_CANCELED_AFTER_PAYMENT"
+    "order:8067c5e4834f3c0a3c8a4e921d65c5b1",
+    "item:8067c5e4834f3c0a3c8a4e921d65c5b1:1",
+    "item:8067c5e4834f3c0a3c8a4e921d65c5b1:2",
+    "payment:8067c5e4834f3c0a3c8a4e921d65c5b1:1",
+    "seller:6973a06f484aacf400ece213dbf3d946",
+    "policy:DELIVERY_WITHIN_ESTIMATE"
   ],
   "financial_resolution": {
     "currency": "BRL",
-    "item_total_brl": 27.9,
-    "freight_total_brl": 9.26,
-    "payment_total_brl": 37.16,
-    "recommended_refund_brl": 37.16
+    "item_total_brl": 163.98,
+    "freight_total_brl": 16.64,
+    "payment_total_brl": 180.62,
+    "recommended_refund_brl": 0.0
   },
   "resolution_actions": [
-    "issue_full_refund"
+    "reject_late_refund"
   ]
 }

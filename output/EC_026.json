@@ -1,53 +1,53 @@
 {
   "case_id": "EC_026",
   "assessment": {
-    "primary_issue": "late_delivery_logistics",
+    "primary_issue": "canceled_order_paid",
     "case_status": "action_required",
     "confidence": 0.99
   },
   "affected_entities": {
     "order_ids": [
-      "00063b381e2406b52ad429470734ebd5"
+      "966f96af9d189dc428ff04ebbca821b8"
     ],
     "item_ids": [
-      "00063b381e2406b52ad429470734ebd5:1"
+      "966f96af9d189dc428ff04ebbca821b8:1"
     ],
     "seller_ids": [
-      "8602a61d680a10a82cceeeda0d99ea3d"
+      "5f2684dab12e59f83bef73ae57724e45"
     ],
     "payment_ids": [
-      "00063b381e2406b52ad429470734ebd5:1"
+      "966f96af9d189dc428ff04ebbca821b8:1"
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+        "cause_code": "ORDER_CANCELED_AFTER_PAYMENT",
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
-        "party_type": "logistics_provider",
-        "party_id": "LOGISTICS_PROVIDER"
+        "party_type": "platform",
+        "party_id": "OLIST_PLATFORM"
       }
     ]
   },
   "evidence_ids": [
-    "order:00063b381e2406b52ad429470734ebd5",
-    "item:00063b381e2406b52ad429470734ebd5:1",
-    "payment:00063b381e2406b52ad429470734ebd5:1",
-    "seller:8602a61d680a10a82cceeeda0d99ea3d",
-    "policy:CARRIER_DELIVERED_AFTER_ESTIMATE"
+    "order:966f96af9d189dc428ff04ebbca821b8",
+    "item:966f96af9d189dc428ff04ebbca821b8:1",
+    "payment:966f96af9d189dc428ff04ebbca821b8:1",
+    "seller:5f2684dab12e59f83bef73ae57724e45",
+    "policy:ORDER_CANCELED_AFTER_PAYMENT"
   ],
   "financial_resolution": {
     "currency": "BRL",
-    "item_total_brl": 45.0,
-    "freight_total_brl": 12.98,
-    "payment_total_brl": 57.98,
-    "recommended_refund_brl": 12.98
+    "item_total_brl": 129.9,
+    "freight_total_brl": 12.44,
+    "payment_total_brl": 142.34,
+    "recommended_refund_brl": 142.34
   },
   "resolution_actions": [
-    "refund_freight"
+    "issue_full_refund"
   ]
 }

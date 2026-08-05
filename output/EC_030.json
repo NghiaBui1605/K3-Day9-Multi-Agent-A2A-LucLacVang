@@ -1,53 +1,52 @@
 {
   "case_id": "EC_030",
   "assessment": {
-    "primary_issue": "late_delivery_logistics",
-    "case_status": "action_required",
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
     "confidence": 0.99
   },
   "affected_entities": {
     "order_ids": [
-      "00324b3eda39ba5ecce3945823e3594c"
+      "405be8487a7fde1db0bc31ad6b08050a"
     ],
     "item_ids": [
-      "00324b3eda39ba5ecce3945823e3594c:1"
+      "405be8487a7fde1db0bc31ad6b08050a:1"
     ],
     "seller_ids": [
-      "0dd184061fb0eaa7ca37932c68ab91c5"
+      "cfb1a033743668a192316f3c6d1d2671"
     ],
     "payment_ids": [
-      "00324b3eda39ba5ecce3945823e3594c:1"
+      "405be8487a7fde1db0bc31ad6b08050a:2",
+      "405be8487a7fde1db0bc31ad6b08050a:1",
+      "405be8487a7fde1db0bc31ad6b08050a:3"
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
         "rank": 1
       }
     ],
-    "responsible_parties": [
-      {
-        "party_type": "logistics_provider",
-        "party_id": "LOGISTICS_PROVIDER"
-      }
-    ]
+    "responsible_parties": []
   },
   "evidence_ids": [
-    "order:00324b3eda39ba5ecce3945823e3594c",
-    "item:00324b3eda39ba5ecce3945823e3594c:1",
-    "payment:00324b3eda39ba5ecce3945823e3594c:1",
-    "seller:0dd184061fb0eaa7ca37932c68ab91c5",
-    "policy:CARRIER_DELIVERED_AFTER_ESTIMATE"
+    "order:405be8487a7fde1db0bc31ad6b08050a",
+    "item:405be8487a7fde1db0bc31ad6b08050a:1",
+    "payment:405be8487a7fde1db0bc31ad6b08050a:2",
+    "payment:405be8487a7fde1db0bc31ad6b08050a:1",
+    "payment:405be8487a7fde1db0bc31ad6b08050a:3",
+    "seller:cfb1a033743668a192316f3c6d1d2671",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
   ],
   "financial_resolution": {
     "currency": "BRL",
-    "item_total_brl": 76.0,
-    "freight_total_brl": 34.07,
-    "payment_total_brl": 110.07,
-    "recommended_refund_brl": 34.07
+    "item_total_brl": 15.9,
+    "freight_total_brl": 9.94,
+    "payment_total_brl": 25.84,
+    "recommended_refund_brl": 0.0
   },
   "resolution_actions": [
-    "refund_freight"
+    "explain_valid_split_payment"
   ]
 }

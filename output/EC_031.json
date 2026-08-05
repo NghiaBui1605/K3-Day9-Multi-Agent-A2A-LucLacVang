@@ -7,16 +7,16 @@
   },
   "affected_entities": {
     "order_ids": [
-      "0032d07457ae9c806c79368d7d9ce96b"
+      "4274ff4a5df607e75b32b80e2f8eda3f"
     ],
     "item_ids": [
-      "0032d07457ae9c806c79368d7d9ce96b:1"
+      "4274ff4a5df607e75b32b80e2f8eda3f:1"
     ],
     "seller_ids": [
-      "e333046ce6517bd8bb510291d44f0130"
+      "88ae906ea2acf6971f26c3e8b7cb4357"
     ],
     "payment_ids": [
-      "0032d07457ae9c806c79368d7d9ce96b:1"
+      "4274ff4a5df607e75b32b80e2f8eda3f:1"
     ]
   },
   "root_cause_analysis": {
@@ -34,18 +34,18 @@
     ]
   },
   "evidence_ids": [
-    "order:0032d07457ae9c806c79368d7d9ce96b",
-    "item:0032d07457ae9c806c79368d7d9ce96b:1",
-    "payment:0032d07457ae9c806c79368d7d9ce96b:1",
-    "seller:e333046ce6517bd8bb510291d44f0130",
+    "order:4274ff4a5df607e75b32b80e2f8eda3f",
+    "item:4274ff4a5df607e75b32b80e2f8eda3f:1",
+    "payment:4274ff4a5df607e75b32b80e2f8eda3f:1",
+    "seller:88ae906ea2acf6971f26c3e8b7cb4357",
     "policy:CARRIER_DELIVERED_AFTER_ESTIMATE"
   ],
   "financial_resolution": {
     "currency": "BRL",
-    "item_total_brl": 159.0,
-    "freight_total_brl": 27.19,
-    "payment_total_brl": 186.19,
-    "recommended_refund_brl": 27.19
+    "item_total_brl": 82.0,
+    "freight_total_brl": 7.44,
+    "payment_total_brl": 89.44,
+    "recommended_refund_brl": 7.44
   },
   "resolution_actions": [
     "refund_freight"

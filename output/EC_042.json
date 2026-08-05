@@ -1,53 +1,48 @@
 {
   "case_id": "EC_042",
   "assessment": {
-    "primary_issue": "valid_split_payment",
+    "primary_issue": "unsupported_late_claim",
     "case_status": "no_action",
     "confidence": 0.99
   },
   "affected_entities": {
     "order_ids": [
-      "00c95282163553a982f38481f9488481"
+      "8a5fc33c79bf3f4d9bbcc3dceb6b67c4"
     ],
     "item_ids": [
-      "00c95282163553a982f38481f9488481:1"
+      "8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1"
     ],
     "seller_ids": [
-      "dbc22125167c298ef99da25668e1011f"
+      "6bbcb8924baf70b7fe2fe2097e8cd407"
     ],
     "payment_ids": [
-      "00c95282163553a982f38481f9488481:1",
-      "00c95282163553a982f38481f9488481:4",
-      "00c95282163553a982f38481f9488481:3",
-      "00c95282163553a982f38481f9488481:2"
+      "8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1"
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
+        "cause_code": "DELIVERY_WITHIN_ESTIMATE",
         "rank": 1
       }
     ],
     "responsible_parties": []
   },
   "evidence_ids": [
-    "order:00c95282163553a982f38481f9488481",
-    "item:00c95282163553a982f38481f9488481:1",
-    "payment:00c95282163553a982f38481f9488481:1",
-    "payment:00c95282163553a982f38481f9488481:4",
-    "payment:00c95282163553a982f38481f9488481:3",
-    "seller:dbc22125167c298ef99da25668e1011f",
-    "policy:MULTIPLE_PAYMENTS_RECONCILED"
+    "order:8a5fc33c79bf3f4d9bbcc3dceb6b67c4",
+    "item:8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1",
+    "payment:8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1",
+    "seller:6bbcb8924baf70b7fe2fe2097e8cd407",
+    "policy:DELIVERY_WITHIN_ESTIMATE"
   ],
   "financial_resolution": {
     "currency": "BRL",
-    "item_total_brl": 106.9,
-    "freight_total_brl": 18.0,
-    "payment_total_brl": 124.9,
+    "item_total_brl": 231.2,
+    "freight_total_brl": 38.53,
+    "payment_total_brl": 269.73,
     "recommended_refund_brl": 0.0
   },
   "resolution_actions": [
-    "explain_valid_split_payment"
+    "reject_late_refund"
   ]
 }

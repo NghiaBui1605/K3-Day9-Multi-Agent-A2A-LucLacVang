@@ -200,3 +200,27 @@ Trong repo phải có thêm:
 2. Khi nộp bài, chỉ nén folder `output/` thành file zip; không đưa source code, `.env` hoặc các file audit vào zip này.
 3. Luôn commit toàn bộ source code lên repo trước k hi nộp file output zip để chấm điểm.
 4. API key và secret phải đặt trong file `.env` và không được commit. Tên model sử dụng phải được khai báo rõ trong source code, đồng thời ghi lại trong `metadata.json` (Tức là model name không ghi vào .env, cho vào code để chấm)
+
+## 10. Chạy và kiểm tra implementation
+
+Tạo lại 50 output cùng trace/metadata từ bộ input hiện có:
+
+```powershell
+python src\main.py --process
+```
+
+Chạy regression tests cho pipeline và Verifier Agent:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+Chạy chatbot API tại `http://127.0.0.1:8000`:
+
+```powershell
+Copy-Item .env.example .env
+# Điền OPENROUTER_API_KEY trong .env; có thể bỏ qua để dùng fallback deterministic.
+python src\chatbot.py
+```
+
+Giao diện React nằm trong `frontend/`; xem `frontend/README.md` để chạy development server hoặc production build.

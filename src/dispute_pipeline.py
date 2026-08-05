@@ -227,8 +227,8 @@ def build_assessment(case: dict[str, Any], facts: CaseFacts, issue: str) -> dict
     }
 
 
-def verifier_agent(result: dict[str, Any]) -> None:
-    """Fail fast on the submission constraints that do not need a grader."""
+def verifier_agent(result: dict[str, Any], facts: CaseFacts) -> None:
+    """Validate schema limits, source-backed IDs, money and policy decisions."""
     assessment = result["assessment"]
     if assessment["primary_issue"] not in POLICY_ISSUES:
         raise ValueError("Unknown primary issue")
@@ -251,6 +251,65 @@ def verifier_agent(result: dict[str, Any]) -> None:
     if any(not evidence.startswith(allowed_prefixes) for evidence in result["evidence_ids"]):
         raise ValueError("Invalid evidence ID prefix")
 
+    order_id = facts.order["order_id"]
+    valid_entities = {
+        "order_ids": {order_id},
+        "item_ids": {f"{order_id}:{item['order_item_id']}" for item in facts.items},
+        "seller_ids": {item["seller_id"] for item in facts.items},
+        "payment_ids": {
+            f"{order_id}:{payment['payment_sequential']}" for payment in facts.payments
+        },
+    }
+    for field, valid_ids in valid_entities.items():
+        submitted = result["affected_entities"][field]
+        if len(submitted) != len(set(submitted)):
+            raise ValueError(f"Duplicate {field}")
+        if not set(submitted).issubset(valid_ids):
+            raise ValueError(f"Unknown source ID in {field}")
+    if result["affected_entities"]["order_ids"] != [order_id]:
+        raise ValueError("Assessment must contain its claimed order ID")
+
+    cause_code, expected_status, expected_action = POLICY_ISSUES[assessment["primary_issue"]]
+    if assessment["case_status"] != expected_status:
+        raise ValueError("case_status does not match the selected policy")
+    if result["root_cause_analysis"]["ranked_causes"] != [
+        {"cause_code": cause_code, "rank": 1}
+    ]:
+        raise ValueError("Root cause does not match the selected policy")
+    if result["resolution_actions"] != [expected_action]:
+        raise ValueError("Resolution action does not match the selected policy")
+
+    valid_evidence = {f"order:{order_id}", f"policy:{cause_code}"}
+    valid_evidence.update(f"item:{entity_id}" for entity_id in valid_entities["item_ids"])
+    valid_evidence.update(f"seller:{entity_id}" for entity_id in valid_entities["seller_ids"])
+    valid_evidence.update(f"payment:{entity_id}" for entity_id in valid_entities["payment_ids"])
+    submitted_evidence = result["evidence_ids"]
+    if len(submitted_evidence) != len(set(submitted_evidence)):
+        raise ValueError("Duplicate evidence ID")
+    if not set(submitted_evidence).issubset(valid_evidence):
+        raise ValueError("Evidence ID is not backed by a source row or policy")
+    if f"order:{order_id}" not in submitted_evidence or f"policy:{cause_code}" not in submitted_evidence:
+        raise ValueError("Order and policy evidence are required")
+
+    financial = result["financial_resolution"]
+    expected_totals = {
+        "item_total_brl": money(facts.item_total),
+        "freight_total_brl": money(facts.freight_total),
+        "payment_total_brl": money(facts.payment_total),
+    }
+    for field, expected in expected_totals.items():
+        if Decimal(str(financial[field])) != Decimal(str(expected)):
+            raise ValueError(f"Incorrect {field}")
+    expected_refund = (
+        facts.payment_total
+        if assessment["primary_issue"] in {"canceled_order_paid", "unavailable_order_paid"}
+        else facts.freight_total
+        if assessment["primary_issue"] in {"late_delivery_seller", "late_delivery_logistics"}
+        else Decimal("0")
+    )
+    if Decimal(str(financial["recommended_refund_brl"])) != Decimal(str(money(expected_refund))):
+        raise ValueError("Incorrect recommended_refund_brl")
+
 
 def process_case(dataset: Dataset, case: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     if case.get("policy_version") != POLICY_VERSION:
@@ -261,7 +320,7 @@ def process_case(dataset: Dataset, case: dict[str, Any]) -> tuple[dict[str, Any]
     facts = collect_facts(dataset, order_id)
     issue = policy_agent(facts)
     result = build_assessment(case, facts, issue)
-    verifier_agent(result)
+    verifier_agent(result, facts)
     trace = {
         "case_id": case["case_id"],
         "order_id": order_id,
@@ -277,11 +336,17 @@ def process_directory(data_dir: Path, input_dir: Path, output_dir: Path, logging
     input_files = sorted(input_dir.glob("EC_*.json"))
     if not input_files:
         raise ValueError("No EC_*.json input files found. Run --generate-mocks for local development.")
+    expected_names = [f"EC_{number:03d}.json" for number in range(1, 51)]
+    actual_names = [path.name for path in input_files]
+    if actual_names != expected_names:
+        raise ValueError("Input must contain exactly EC_001.json through EC_050.json")
     output_dir.mkdir(parents=True, exist_ok=True)
     logging_dir.mkdir(parents=True, exist_ok=True)
     traces = []
     for input_file in input_files:
         case = json.loads(input_file.read_text(encoding="utf-8"))
+        if case.get("case_id") != input_file.stem:
+            raise ValueError(f"case_id does not match filename: {input_file.name}")
         result, trace = process_case(dataset, case)
         output_file = output_dir / input_file.name
         output_file.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

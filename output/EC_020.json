@@ -1,53 +1,50 @@
 {
   "case_id": "EC_020",
   "assessment": {
-    "primary_issue": "late_delivery_seller",
-    "case_status": "action_required",
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
     "confidence": 0.99
   },
   "affected_entities": {
     "order_ids": [
-      "005e5166e99d1e4d0c4f808b0540ba94"
+      "96087ef44ca9abdbc4c372a3dd3c859f"
     ],
     "item_ids": [
-      "005e5166e99d1e4d0c4f808b0540ba94:1"
+      "96087ef44ca9abdbc4c372a3dd3c859f:1"
     ],
     "seller_ids": [
-      "e9bc59e7b60fc3063eb2290deda4cced"
+      "7813ea3ebd9411dc600b4dd01f7a97b9"
     ],
     "payment_ids": [
-      "005e5166e99d1e4d0c4f808b0540ba94:1"
+      "96087ef44ca9abdbc4c372a3dd3c859f:2",
+      "96087ef44ca9abdbc4c372a3dd3c859f:1"
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "SELLER_HANDOFF_AFTER_LIMIT",
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
         "rank": 1
       }
     ],
-    "responsible_parties": [
-      {
-        "party_type": "seller",
-        "party_id": "e9bc59e7b60fc3063eb2290deda4cced"
-      }
-    ]
+    "responsible_parties": []
   },
   "evidence_ids": [
-    "order:005e5166e99d1e4d0c4f808b0540ba94",
-    "item:005e5166e99d1e4d0c4f808b0540ba94:1",
-    "payment:005e5166e99d1e4d0c4f808b0540ba94:1",
-    "seller:e9bc59e7b60fc3063eb2290deda4cced",
-    "policy:SELLER_HANDOFF_AFTER_LIMIT"
+    "order:96087ef44ca9abdbc4c372a3dd3c859f",
+    "item:96087ef44ca9abdbc4c372a3dd3c859f:1",
+    "payment:96087ef44ca9abdbc4c372a3dd3c859f:2",
+    "payment:96087ef44ca9abdbc4c372a3dd3c859f:1",
+    "seller:7813ea3ebd9411dc600b4dd01f7a97b9",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
   ],
   "financial_resolution": {
     "currency": "BRL",
-    "item_total_brl": 120.1,
-    "freight_total_brl": 16.6,
-    "payment_total_brl": 136.7,
-    "recommended_refund_brl": 16.6
+    "item_total_brl": 260.0,
+    "freight_total_brl": 9.08,
+    "payment_total_brl": 269.08,
+    "recommended_refund_brl": 0.0
   },
   "resolution_actions": [
-    "refund_freight"
+    "explain_valid_split_payment"
   ]
 }

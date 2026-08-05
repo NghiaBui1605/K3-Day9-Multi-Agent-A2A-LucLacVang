@@ -1,6 +1,6 @@
 {
   "model": {
-    "chatbot": "meta-llama/llama-3.2-3b-instruct:free",
+    "chatbot": "meta-llama/llama-3.2-3b-instruct",
     "policy_agents": "none (deterministic rules)"
   },
   "parameter_size": {

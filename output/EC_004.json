@@ -1,53 +1,50 @@
 {
   "case_id": "EC_004",
   "assessment": {
-    "primary_issue": "canceled_order_paid",
-    "case_status": "action_required",
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
     "confidence": 0.99
   },
   "affected_entities": {
     "order_ids": [
-      "00ff0cf5583758e6964723e42f111bf4"
+      "fd28a6dfe413804d0b89b7c9abf5b1f3"
     ],
     "item_ids": [
-      "00ff0cf5583758e6964723e42f111bf4:1"
+      "fd28a6dfe413804d0b89b7c9abf5b1f3:1"
     ],
     "seller_ids": [
-      "b17b679f4f5ce2e03ce6968c62648246"
+      "17a053fcb14bd219540cbde0df490be0"
     ],
     "payment_ids": [
-      "00ff0cf5583758e6964723e42f111bf4:1"
+      "fd28a6dfe413804d0b89b7c9abf5b1f3:2",
+      "fd28a6dfe413804d0b89b7c9abf5b1f3:1"
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "ORDER_CANCELED_AFTER_PAYMENT",
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
         "rank": 1
       }
     ],
-    "responsible_parties": [
-      {
-        "party_type": "platform",
-        "party_id": "OLIST_PLATFORM"
-      }
-    ]
+    "responsible_parties": []
   },
   "evidence_ids": [
-    "order:00ff0cf5583758e6964723e42f111bf4",
-    "item:00ff0cf5583758e6964723e42f111bf4:1",
-    "payment:00ff0cf5583758e6964723e42f111bf4:1",
-    "seller:b17b679f4f5ce2e03ce6968c62648246",
-    "policy:ORDER_CANCELED_AFTER_PAYMENT"
+    "order:fd28a6dfe413804d0b89b7c9abf5b1f3",
+    "item:fd28a6dfe413804d0b89b7c9abf5b1f3:1",
+    "payment:fd28a6dfe413804d0b89b7c9abf5b1f3:2",
+    "payment:fd28a6dfe413804d0b89b7c9abf5b1f3:1",
+    "seller:17a053fcb14bd219540cbde0df490be0",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
   ],
   "financial_resolution": {
     "currency": "BRL",
-    "item_total_brl": 154.9,
-    "freight_total_brl": 15.25,
-    "payment_total_brl": 170.15,
-    "recommended_refund_brl": 170.15
+    "item_total_brl": 179.9,
+    "freight_total_brl": 32.06,
+    "payment_total_brl": 211.96,
+    "recommended_refund_brl": 0.0
   },
   "resolution_actions": [
-    "issue_full_refund"
+    "explain_valid_split_payment"
   ]
 }
