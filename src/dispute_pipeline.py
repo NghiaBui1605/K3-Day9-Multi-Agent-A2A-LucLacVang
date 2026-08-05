@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import json
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
@@ -30,6 +31,7 @@ POLICY_ISSUES = {
 }
 POLICY_ORDER = tuple(POLICY_ISSUES)
 CENT = Decimal("0.01")
+OPENROUTER_CACHE_VERSION = "qwen3-json-v1"
 
 
 def money(value: Decimal) -> float:
@@ -338,7 +340,14 @@ def process_case(dataset: Dataset, case: dict[str, Any]) -> tuple[dict[str, Any]
     return result, trace
 
 
-def process_directory(data_dir: Path, input_dir: Path, output_dir: Path, logging_dir: Path) -> int:
+def process_directory(
+    data_dir: Path,
+    input_dir: Path,
+    output_dir: Path,
+    logging_dir: Path,
+    llm_client: Any | None = None,
+    workers: int = 1,
+) -> int:
     dataset = Dataset.load(data_dir)
     input_files = sorted(input_dir.glob("EC_*.json"))
     if not input_files:
@@ -349,12 +358,65 @@ def process_directory(data_dir: Path, input_dir: Path, output_dir: Path, logging
         raise ValueError("Input must contain exactly EC_001.json through EC_050.json")
     output_dir.mkdir(parents=True, exist_ok=True)
     logging_dir.mkdir(parents=True, exist_ok=True)
-    traces = []
-    for input_file in input_files:
+    orchestrator = None
+    if llm_client is not None:
+        # Delayed import avoids a module cycle: llm_multi_agent imports the
+        # source-backed facts and policy helpers from this module.
+        from llm_multi_agent import LLMOrchestrator
+
+        orchestrator = LLMOrchestrator(llm_client, dataset)
+        cache_dir = logging_dir / ".openrouter-cache"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        cache_dir = None
+
+    def process_input(input_file: Path) -> tuple[Path, dict[str, Any], dict[str, Any]]:
         case = json.loads(input_file.read_text(encoding="utf-8"))
         if case.get("case_id") != input_file.stem:
             raise ValueError(f"case_id does not match filename: {input_file.name}")
         result, trace = process_case(dataset, case)
+        if orchestrator is not None:
+            cache_file = cache_dir / input_file.name
+            if cache_file.exists():
+                cached = json.loads(cache_file.read_text(encoding="utf-8"))
+                if (
+                    cached.get("cache_version") == OPENROUTER_CACHE_VERSION
+                    and cached.get("model") == llm_client.model
+                    and cached.get("case_id") == case["case_id"]
+                    and cached.get("order_id") == case["customer_request"]["claimed_order_id"]
+                ):
+                    return input_file, cached["result"], cached["trace"]
+            orchestration = orchestrator.run(
+                case["customer_request"]["message"], case, result, []
+            )
+            trace["model"] = llm_client.model
+            trace["llm_handoffs"] = orchestration.handoffs
+            trace["coordinator_reply"] = orchestration.reply
+            trace["llm_verified"] = True
+            cache_payload = {
+                "cache_version": OPENROUTER_CACHE_VERSION,
+                "model": llm_client.model,
+                "case_id": case["case_id"],
+                "order_id": case["customer_request"]["claimed_order_id"],
+                "result": result,
+                "trace": trace,
+            }
+            temporary_cache_file = cache_file.with_suffix(".tmp")
+            temporary_cache_file.write_text(
+                json.dumps(cache_payload, ensure_ascii=False) + "\n", encoding="utf-8"
+            )
+            temporary_cache_file.replace(cache_file)
+        return input_file, result, trace
+
+    effective_workers = max(1, workers) if orchestrator is not None else 1
+    if effective_workers == 1:
+        processed = list(map(process_input, input_files))
+    else:
+        with ThreadPoolExecutor(max_workers=effective_workers) as executor:
+            processed = list(executor.map(process_input, input_files))
+
+    traces = []
+    for input_file, result, trace in processed:
         output_file = output_dir / input_file.name
         output_file.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         traces.append(trace)
@@ -364,13 +426,18 @@ def process_directory(data_dir: Path, input_dir: Path, output_dir: Path, logging
     metadata = {
         "model": {
             "chatbot": DEFAULT_OPENROUTER_MODEL,
-            "policy_agents": "none (deterministic rules)",
+            "policy_agents": DEFAULT_OPENROUTER_MODEL if orchestrator is not None else "none (deterministic rules)",
         },
-        "parameter_size": {"chatbot": MODEL_PARAMETER_SIZE, "policy_agents": "0B"},
-        "framework": "Python standard library",
+        "parameter_size": {
+            "chatbot": MODEL_PARAMETER_SIZE,
+            "policy_agents": MODEL_PARAMETER_SIZE if orchestrator is not None else "0B",
+        },
+        "framework": "Python standard library + OpenRouter multi-agent handoffs",
         "runtime": "local Python 3",
         "policy_version": POLICY_VERSION,
         "processed_cases": len(input_files),
+        "execution_mode": "openrouter_multi_agent" if orchestrator is not None else "deterministic",
+        "llm_calls_per_case": 5 if orchestrator is not None else 0,
     }
     (logging_dir / "metadata.json").write_text(
         json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

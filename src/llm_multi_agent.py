@@ -17,12 +17,18 @@ from dispute_pipeline import Dataset, collect_facts
 class CompletionClient(Protocol):
     model: str
 
-    def complete(self, messages: list[dict[str, str]], max_tokens: int = 450) -> str: ...
+    def complete(
+        self,
+        messages: list[dict[str, str]],
+        max_tokens: int = 450,
+        json_mode: bool = False,
+    ) -> str: ...
 
 
 HANDOFF_FORMAT = """Trả về đúng một JSON object, không có markdown, với các khóa:
-summary (chuỗi), observations (mảng chuỗi), evidence_ids (mảng chuỗi),
-open_questions (mảng chuỗi). Chỉ trích evidence IDs đã có trong facts."""
+summary (tối đa 20 từ), observations (tối đa 2 chuỗi, mỗi chuỗi tối đa 15 từ),
+evidence_ids (tối đa 3 ID), open_questions (tối đa 1 chuỗi). Chỉ trích evidence
+IDs đã có trong facts. Viết cực kỳ ngắn để toàn bộ JSON không quá 180 tokens."""
 
 SPECIALIST_PROMPTS = {
     "order_seller": """Bạn là Order & Seller Agent. Phân tích chỉ trạng thái đơn,
@@ -140,7 +146,7 @@ class LLMOrchestrator:
         raw = self.client.complete([
             {"role": "system", "content": f"{system_prompt}\n{HANDOFF_FORMAT}"},
             {"role": "user", "content": "Facts:\n" + json.dumps(payload, ensure_ascii=False)},
-        ], max_tokens=300)
+        ], max_tokens=240, json_mode=True)
         return {
             "from": f"{role}_agent",
             "to": "policy_agent" if role != "policy" else "coordinator_agent",
@@ -182,4 +188,4 @@ class LLMOrchestrator:
             "canonical_assessment": canonical,
             "agent_handoffs": handoffs,
         }, ensure_ascii=False)})
-        return self.client.complete(messages, max_tokens=400)
+        return self.client.complete(messages, max_tokens=240)

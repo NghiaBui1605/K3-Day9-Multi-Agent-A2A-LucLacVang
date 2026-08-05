@@ -1,14 +1,16 @@
 {
   "model": {
-    "chatbot": "meta-llama/llama-3.2-3b-instruct",
-    "policy_agents": "none (deterministic rules)"
+    "chatbot": "qwen/qwen3-8b",
+    "policy_agents": "qwen/qwen3-8b"
   },
   "parameter_size": {
-    "chatbot": "3B",
-    "policy_agents": "0B"
+    "chatbot": "8.2B",
+    "policy_agents": "8.2B"
   },
-  "framework": "Python standard library",
+  "framework": "Python standard library + OpenRouter multi-agent handoffs",
   "runtime": "local Python 3",
   "policy_version": "EC_POLICY_V1",
-  "processed_cases": 50
+  "processed_cases": 50,
+  "execution_mode": "openrouter_multi_agent",
+  "llm_calls_per_case": 5
 }

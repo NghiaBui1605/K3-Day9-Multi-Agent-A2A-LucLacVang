@@ -5,6 +5,8 @@ from __future__ import annotations
 import copy
 import json
 import sys
+import tempfile
+import threading
 import unittest
 from pathlib import Path
 
@@ -12,7 +14,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from dispute_pipeline import Dataset, collect_facts, process_case, verifier_agent  # noqa: E402
+from dispute_pipeline import (  # noqa: E402
+    Dataset,
+    collect_facts,
+    process_case,
+    process_directory,
+    verifier_agent,
+)
 
 
 class PipelineTests(unittest.TestCase):
@@ -55,6 +63,55 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(
             [f"payment:{order_id}:1", f"payment:{order_id}:2"], payment_evidence
         )
+
+    def test_openrouter_mode_records_real_agent_contract_shape(self) -> None:
+        class FakeClient:
+            model = "qwen/qwen3-8b"
+
+            def __init__(self) -> None:
+                self.calls = 0
+                self.lock = threading.Lock()
+
+            def complete(
+                self,
+                _messages: list[dict[str, str]],
+                max_tokens: int = 450,
+                json_mode: bool = False,
+            ) -> str:
+                with self.lock:
+                    self.calls += 1
+                return json.dumps({
+                    "summary": "verified",
+                    "observations": [],
+                    "evidence_ids": [],
+                    "open_questions": [],
+                })
+
+        client = FakeClient()
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary = Path(temporary_directory)
+            count = process_directory(
+                ROOT / "data",
+                ROOT / "input",
+                temporary / "output",
+                temporary / "logging",
+                llm_client=client,
+                workers=4,
+            )
+            metadata = json.loads(
+                (temporary / "logging" / "metadata.json").read_text(encoding="utf-8")
+            )
+            traces = [
+                json.loads(line)
+                for line in (temporary / "logging" / "trace.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+        self.assertEqual(50, count)
+        self.assertEqual(250, client.calls)
+        self.assertEqual("openrouter_multi_agent", metadata["execution_mode"])
+        self.assertTrue(all(len(trace["llm_handoffs"]) == 4 for trace in traces))
+        self.assertTrue(all(trace["llm_verified"] for trace in traces))
 
 
 if __name__ == "__main__":

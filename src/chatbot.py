@@ -12,6 +12,7 @@ import argparse
 import json
 import os
 import re
+import time
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from http import HTTPStatus
@@ -75,34 +76,52 @@ class OpenRouterClient:
         self.api_key = api_key
         self.model = model
 
-    def complete(self, messages: list[dict[str, str]], max_tokens: int = 450) -> str:
-        payload = json.dumps({
+    def complete(
+        self,
+        messages: list[dict[str, str]],
+        max_tokens: int = 450,
+        json_mode: bool = False,
+    ) -> str:
+        request_body: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
-            "temperature": 0.2,
+            "temperature": 0.0,
+            "seed": 0,
+            "reasoning": {"effort": "none"},
             "max_tokens": max_tokens,
-        }).encode("utf-8")
-        request = Request(
-            OPENROUTER_CHAT_COMPLETIONS_URL,
-            data=payload,
-            method="POST",
-            headers={
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": "http://127.0.0.1",
-                "X-OpenRouter-Title": "Olist Dispute Assistant",
-            },
-        )
-        try:
-            with urlopen(request, timeout=45) as response:
-                body = json.loads(response.read().decode("utf-8"))
-        except HTTPError as error:
-            detail = error.read().decode("utf-8", errors="replace")[:500]
-            if error.code == 404 and "unavailable for free" in detail.lower():
-                raise FreeModelUnavailableError from error
-            raise OpenRouterServiceError(f"HTTP {error.code}") from error
-        except URLError as error:
-            raise OpenRouterServiceError("network unavailable") from error
+        }
+        if json_mode:
+            request_body["response_format"] = {"type": "json_object"}
+        payload = json.dumps(request_body).encode("utf-8")
+        body: dict[str, Any] | None = None
+        for attempt in range(3):
+            request = Request(
+                OPENROUTER_CHAT_COMPLETIONS_URL,
+                data=payload,
+                method="POST",
+                headers={
+                    "Authorization": f"Bearer {self.api_key}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "http://127.0.0.1",
+                    "X-OpenRouter-Title": "Olist Dispute Assistant",
+                },
+            )
+            try:
+                with urlopen(request, timeout=60) as response:
+                    body = json.loads(response.read().decode("utf-8"))
+                break
+            except HTTPError as error:
+                detail = error.read().decode("utf-8", errors="replace")[:500]
+                if error.code == 404 and "unavailable for free" in detail.lower():
+                    raise FreeModelUnavailableError from error
+                if error.code not in {429, 500, 502, 503, 504} or attempt == 2:
+                    raise OpenRouterServiceError(f"HTTP {error.code}") from error
+            except (URLError, TimeoutError, OSError) as error:
+                if attempt == 2:
+                    raise OpenRouterServiceError("network timeout or unavailable") from error
+            time.sleep(2**attempt)
+        if body is None:
+            raise OpenRouterServiceError("empty OpenRouter response")
         try:
             content = body["choices"][0]["message"]["content"]
         except (KeyError, IndexError, TypeError) as error:

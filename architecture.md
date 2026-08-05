@@ -1,7 +1,8 @@
 # Multi-agent dispute-resolution architecture
 
-The implementation uses deterministic specialist agents rather than an LLM.
-This keeps every conclusion reproducible and prevents claims from being
+The implementation supports real LLM specialist handoffs through OpenRouter,
+with a deterministic policy engine and verifier as safety boundaries. This
+lets agents analyze and communicate while preventing claims from being
 invented beyond the records in the Olist CSV files.
 
 ```text
@@ -30,12 +31,12 @@ Chat adapter (`DisputeChatbot`) / Coordinator (`process_case`)
 
 ## Handoff contract
 
-The first three agents return only facts whose fields originate in CSV rows.
-The Policy Agent receives these facts and applies the precedence defined by
-`EC_POLICY_V1`. The Verifier then checks structural submission limits before
-the coordinator writes a case output. `logging/trace.jsonl` records this exact
-handoff sequence for each run; it is overwritten for a fresh run rather than
-appended.
+The first three Qwen3-8B agents receive scoped facts whose fields originate in
+CSV rows. Their JSON handoffs go to the Qwen3-8B Policy Agent and then the
+Coordinator. The deterministic policy engine and Verifier check structural
+limits, source IDs, money and the EC_POLICY_V1 decision before writing a case
+output. `logging/trace.jsonl` records the real model, handoffs and coordinator
+response for each OpenRouter run; it is overwritten rather than appended.
 
 ## Mock-input workflow
 
@@ -55,7 +56,7 @@ financial recommendation and evidence IDs. For a case lookup, the chatbot
 creates explicit model handoffs: Order & Seller, Payment and Delivery specialists
 send JSON handoffs to a Policy Agent; a Coordinator Agent turns those handoffs
 into the customer-facing reply. All use OpenRouter's
-`meta-llama/llama-3.2-3b-instruct:free` (3B parameters). The model agents have
+`qwen/qwen3-8b` (8.2B parameters). The model agents have
 no direct CSV or write access; deterministic facts and the verifier remain the
 source of truth. If OpenRouter is unavailable, the local verified report is
 returned instead.

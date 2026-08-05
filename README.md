@@ -209,6 +209,19 @@ Tạo lại 50 output cùng trace/metadata từ bộ input hiện có:
 python src\main.py --process
 ```
 
+Chạy pipeline multi-agent thật qua OpenRouter với Qwen3-8B (8.2B parameters):
+
+```powershell
+Copy-Item .env.example .env
+# Điền OPENROUTER_API_KEY trong .env trước khi chạy.
+python src\main.py --process --openrouter --workers 4
+```
+
+Chế độ này thực hiện 5 API call cho mỗi case (Order & Seller, Payment,
+Delivery, Policy và Coordinator), tổng cộng 250 call cho 50 case. Kết quả LLM
+được ghi vào `logging/trace.jsonl`; policy engine và Verifier vẫn kiểm tra quyết
+định trước khi ghi output để tránh hallucination làm sai bài nộp.
+
 Chạy regression tests cho pipeline và Verifier Agent:
 
 ```powershell
@@ -219,7 +232,7 @@ Chạy chatbot API tại `http://127.0.0.1:8000`:
 
 ```powershell
 Copy-Item .env.example .env
-# Điền OPENROUTER_API_KEY trong .env; có thể bỏ qua để dùng fallback deterministic.
+# Điền OPENROUTER_API_KEY trong .env.
 python src\chatbot.py
 ```
 
