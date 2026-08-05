@@ -28,6 +28,7 @@ class PipelineTests(unittest.TestCase):
                 case = json.loads(input_file.read_text(encoding="utf-8"))
                 result, trace = process_case(self.dataset, case)
                 self.assertEqual(input_file.stem, result["case_id"])
+                self.assertEqual(1.0, result["assessment"]["confidence"])
                 self.assertTrue(trace["verified"])
 
     def test_verifier_rejects_fabricated_evidence(self) -> None:

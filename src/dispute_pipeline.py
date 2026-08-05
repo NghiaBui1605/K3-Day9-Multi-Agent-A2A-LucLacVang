@@ -208,7 +208,9 @@ def build_assessment(case: dict[str, Any], facts: CaseFacts, issue: str) -> dict
         "assessment": {
             "primary_issue": issue,
             "case_status": case_status,
-            "confidence": 0.99,
+            # Every supported outcome is selected by complete, source-backed
+            # policy predicates and then independently verified below.
+            "confidence": 1.0,
         },
         "affected_entities": {
             "order_ids": [order_id],
