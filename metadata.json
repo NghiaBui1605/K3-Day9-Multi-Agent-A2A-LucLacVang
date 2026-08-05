@@ -1,0 +1,42 @@
+{
+  "model": "rule-based-deterministic",
+  "model_detail": "No LLM used for core decision logic. Business rules are deterministic Python. Each agent implements a specific domain responsibility per EC_POLICY_V1.",
+  "parameter_size": "0B (rule-based)",
+  "framework": "Python 3.14 / custom multi-agent pipeline",
+  "agents": [
+    {
+      "name": "CoordinatorAgent",
+      "role": "Orchestrates pipeline, assembles final output",
+      "model": "none"
+    },
+    {
+      "name": "OrderSellerAgent",
+      "role": "Retrieves order status, items, seller info, shipping dates",
+      "model": "none"
+    },
+    {
+      "name": "PaymentAgent",
+      "role": "Reconciles payment rows against item+freight totals",
+      "model": "none"
+    },
+    {
+      "name": "DeliveryAgent",
+      "role": "Compares actual delivery vs estimated date and seller handoff vs limit",
+      "model": "none"
+    },
+    {
+      "name": "PolicyAgent",
+      "role": "Applies EC_POLICY_V1 rules in priority order, computes refund and action",
+      "model": "none"
+    },
+    {
+      "name": "VerifierAgent",
+      "role": "Validates evidence IDs, amounts, schema before writing output JSON",
+      "model": "none"
+    }
+  ],
+  "data_source": "Brazilian E-Commerce Public Dataset by Olist (Kaggle)",
+  "runtime": "Windows / Python 3.14 / pandas 3.0.5",
+  "trace_file": "trace.jsonl",
+  "output_dir": "output/"
+}
