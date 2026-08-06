@@ -8,7 +8,7 @@
 | Mã học viên | 01709 |
 | Khóa/Lớp | K3 |
 | Vai trò chính | Xây dựng pipeline xử lý tranh chấp, tích hợp OpenRouter Multi-Agent, Verifier và artifact nộp bài |
-| Ngày hoàn thành | 2026-08-06 |
+| Ngày hoàn thành | 2026-08-05 |
 
 ## 2. Bài toán nghiệp vụ
 
