@@ -1,6 +1,7 @@
 {
   "case_id": "EC_006",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "valid_split_payment",
     "case_status": "no_action",
     "confidence": 1.0
@@ -18,11 +19,34 @@
     "payment_ids": [
       "fe51b7fac3bea42115fa1c3b8973cba7:2",
       "fe51b7fac3bea42115fa1c3b8973cba7:1"
+=======
+    "primary_issue": "canceled_order_paid",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0148d3df00cebda592d4e5f966e300cc"
+    ],
+    "item_ids": [
+      "0148d3df00cebda592d4e5f966e300cc:1",
+      "0148d3df00cebda592d4e5f966e300cc:2",
+      "0148d3df00cebda592d4e5f966e300cc:3",
+      "0148d3df00cebda592d4e5f966e300cc:4",
+      "0148d3df00cebda592d4e5f966e300cc:5"
+    ],
+    "seller_ids": [
+      "0adac9fbd9a2b63cccaac4f8756c1ca8"
+    ],
+    "payment_ids": [
+      "0148d3df00cebda592d4e5f966e300cc:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
         "rank": 1
       }
@@ -45,5 +69,36 @@
   },
   "resolution_actions": [
     "explain_valid_split_payment"
+=======
+        "cause_code": "ORDER_CANCELED_AFTER_PAYMENT",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "platform",
+        "party_id": "OLIST_PLATFORM"
+      }
+    ]
+  },
+  "evidence_ids": [
+    "order:0148d3df00cebda592d4e5f966e300cc",
+    "item:0148d3df00cebda592d4e5f966e300cc:1",
+    "item:0148d3df00cebda592d4e5f966e300cc:2",
+    "item:0148d3df00cebda592d4e5f966e300cc:3",
+    "payment:0148d3df00cebda592d4e5f966e300cc:1",
+    "seller:0adac9fbd9a2b63cccaac4f8756c1ca8",
+    "policy:ORDER_CANCELED_AFTER_PAYMENT"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 27.65,
+    "freight_total_brl": 59.25,
+    "payment_total_brl": 86.9,
+    "recommended_refund_brl": 86.9
+  },
+  "resolution_actions": [
+    "issue_full_refund"
+>>>>>>> 3410db2 (Pre code)
   ]
 }

@@ -3,16 +3,28 @@
   "assessment": {
     "primary_issue": "unavailable_order_paid",
     "case_status": "action_required",
+<<<<<<< HEAD
     "confidence": 1.0
   },
   "affected_entities": {
     "order_ids": [
       "ee234bfd26ca588915483995d811c1d0"
+=======
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0130f0f71fb0e831d18e6a3b33a3a50c"
+>>>>>>> 3410db2 (Pre code)
     ],
     "item_ids": [],
     "seller_ids": [],
     "payment_ids": [
+<<<<<<< HEAD
       "ee234bfd26ca588915483995d811c1d0:1"
+=======
+      "0130f0f71fb0e831d18e6a3b33a3a50c:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
@@ -30,16 +42,26 @@
     ]
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:ee234bfd26ca588915483995d811c1d0",
     "payment:ee234bfd26ca588915483995d811c1d0:1",
+=======
+    "order:0130f0f71fb0e831d18e6a3b33a3a50c",
+    "payment:0130f0f71fb0e831d18e6a3b33a3a50c:1",
+>>>>>>> 3410db2 (Pre code)
     "policy:ORDER_UNAVAILABLE_AFTER_PAYMENT"
   ],
   "financial_resolution": {
     "currency": "BRL",
     "item_total_brl": 0.0,
     "freight_total_brl": 0.0,
+<<<<<<< HEAD
     "payment_total_brl": 619.86,
     "recommended_refund_brl": 619.86
+=======
+    "payment_total_brl": 52.77,
+    "recommended_refund_brl": 52.77
+>>>>>>> 3410db2 (Pre code)
   },
   "resolution_actions": [
     "issue_full_refund"

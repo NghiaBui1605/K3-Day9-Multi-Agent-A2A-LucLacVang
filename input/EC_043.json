@@ -3,8 +3,16 @@
   "opened_at": "2018-10-18T00:00:00-03:00",
   "customer_request": {
     "language": "vi",
+<<<<<<< HEAD
     "message": "Tôi cho rằng đơn hàng được giao trễ. Hãy kiểm tra nguyên nhân và quyền lợi phù hợp.",
     "claimed_order_id": "3ef6bcdda6193f8657168ba7e8b3e948"
   },
   "policy_version": "EC_POLICY_V1"
+=======
+    "message": "Vui lòng kiểm tra đơn hàng, nguyên nhân và quyền lợi phù hợp.",
+    "claimed_order_id": "00010242fe8c5a6d1ba2dd792cb16214"
+  },
+  "policy_version": "EC_POLICY_V1",
+  "mock_case": true
+>>>>>>> 3410db2 (Pre code)
 }

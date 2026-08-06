@@ -3,8 +3,16 @@
   "opened_at": "2018-10-18T00:00:00-03:00",
   "customer_request": {
     "language": "vi",
+<<<<<<< HEAD
     "message": "Đơn hàng không được hoàn tất dù tôi đã thanh toán. Hãy kiểm tra và đề xuất xử lý.",
     "claimed_order_id": "64a8b3b4c19751b51d211deb32fdc67b"
   },
   "policy_version": "EC_POLICY_V1"
+=======
+    "message": "Vui lòng kiểm tra đơn hàng, nguyên nhân và quyền lợi phù hợp.",
+    "claimed_order_id": "00c405bd71187154a7846862f585a9d4"
+  },
+  "policy_version": "EC_POLICY_V1",
+  "mock_case": true
+>>>>>>> 3410db2 (Pre code)
 }

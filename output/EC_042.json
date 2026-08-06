@@ -1,6 +1,7 @@
 {
   "case_id": "EC_042",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "unsupported_late_claim",
     "case_status": "no_action",
     "confidence": 1.0
@@ -17,18 +18,44 @@
     ],
     "payment_ids": [
       "8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1"
+=======
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "00c95282163553a982f38481f9488481"
+    ],
+    "item_ids": [
+      "00c95282163553a982f38481f9488481:1"
+    ],
+    "seller_ids": [
+      "dbc22125167c298ef99da25668e1011f"
+    ],
+    "payment_ids": [
+      "00c95282163553a982f38481f9488481:1",
+      "00c95282163553a982f38481f9488481:4",
+      "00c95282163553a982f38481f9488481:3",
+      "00c95282163553a982f38481f9488481:2"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "DELIVERY_WITHIN_ESTIMATE",
+=======
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
+>>>>>>> 3410db2 (Pre code)
         "rank": 1
       }
     ],
     "responsible_parties": []
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:8a5fc33c79bf3f4d9bbcc3dceb6b67c4",
     "item:8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1",
     "payment:8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1",
@@ -43,5 +70,24 @@
   },
   "resolution_actions": [
     "reject_late_refund"
+=======
+    "order:00c95282163553a982f38481f9488481",
+    "item:00c95282163553a982f38481f9488481:1",
+    "payment:00c95282163553a982f38481f9488481:1",
+    "payment:00c95282163553a982f38481f9488481:4",
+    "payment:00c95282163553a982f38481f9488481:3",
+    "seller:dbc22125167c298ef99da25668e1011f",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 106.9,
+    "freight_total_brl": 18.0,
+    "payment_total_brl": 124.9,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "explain_valid_split_payment"
+>>>>>>> 3410db2 (Pre code)
   ]
 }

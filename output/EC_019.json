@@ -1,6 +1,7 @@
 {
   "case_id": "EC_019",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "unavailable_order_paid",
     "case_status": "action_required",
     "confidence": 1.0
@@ -13,23 +14,51 @@
     "seller_ids": [],
     "payment_ids": [
       "31f935babbc97f5990e0ffd128e19541:1"
+=======
+    "primary_issue": "late_delivery_seller",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0030d783f979fbc5981e75613b057344"
+    ],
+    "item_ids": [
+      "0030d783f979fbc5981e75613b057344:1"
+    ],
+    "seller_ids": [
+      "8e6cc767478edae941d9bd9eb778d77a"
+    ],
+    "payment_ids": [
+      "0030d783f979fbc5981e75613b057344:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "ORDER_UNAVAILABLE_AFTER_PAYMENT",
+=======
+        "cause_code": "SELLER_HANDOFF_AFTER_LIMIT",
+>>>>>>> 3410db2 (Pre code)
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
+<<<<<<< HEAD
         "party_type": "platform",
         "party_id": "OLIST_PLATFORM"
+=======
+        "party_type": "seller",
+        "party_id": "8e6cc767478edae941d9bd9eb778d77a"
+>>>>>>> 3410db2 (Pre code)
       }
     ]
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:31f935babbc97f5990e0ffd128e19541",
     "payment:31f935babbc97f5990e0ffd128e19541:1",
     "policy:ORDER_UNAVAILABLE_AFTER_PAYMENT"
@@ -43,5 +72,22 @@
   },
   "resolution_actions": [
     "issue_full_refund"
+=======
+    "order:0030d783f979fbc5981e75613b057344",
+    "item:0030d783f979fbc5981e75613b057344:1",
+    "payment:0030d783f979fbc5981e75613b057344:1",
+    "seller:8e6cc767478edae941d9bd9eb778d77a",
+    "policy:SELLER_HANDOFF_AFTER_LIMIT"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 60.6,
+    "freight_total_brl": 17.67,
+    "payment_total_brl": 78.27,
+    "recommended_refund_brl": 17.67
+  },
+  "resolution_actions": [
+    "refund_freight"
+>>>>>>> 3410db2 (Pre code)
   ]
 }

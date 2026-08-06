@@ -3,6 +3,7 @@
   "assessment": {
     "primary_issue": "canceled_order_paid",
     "case_status": "action_required",
+<<<<<<< HEAD
     "confidence": 1.0
   },
   "affected_entities": {
@@ -17,6 +18,18 @@
     ],
     "payment_ids": [
       "71303d7e93b399f5bcd537d124c0bcfa:1"
+=======
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "00d0ffd14774da775ac832ba8520510f"
+    ],
+    "item_ids": [],
+    "seller_ids": [],
+    "payment_ids": [
+      "00d0ffd14774da775ac832ba8520510f:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
@@ -34,17 +47,29 @@
     ]
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:71303d7e93b399f5bcd537d124c0bcfa",
     "item:71303d7e93b399f5bcd537d124c0bcfa:1",
     "payment:71303d7e93b399f5bcd537d124c0bcfa:1",
+=======
+    "order:00d0ffd14774da775ac832ba8520510f",
+    "payment:00d0ffd14774da775ac832ba8520510f:1",
+>>>>>>> 3410db2 (Pre code)
     "policy:ORDER_CANCELED_AFTER_PAYMENT"
   ],
   "financial_resolution": {
     "currency": "BRL",
+<<<<<<< HEAD
     "item_total_brl": 100.0,
     "freight_total_brl": 9.34,
     "payment_total_brl": 109.34,
     "recommended_refund_brl": 109.34
+=======
+    "item_total_brl": 0.0,
+    "freight_total_brl": 0.0,
+    "payment_total_brl": 134.49,
+    "recommended_refund_brl": 134.49
+>>>>>>> 3410db2 (Pre code)
   },
   "resolution_actions": [
     "issue_full_refund"

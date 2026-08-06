@@ -1,6 +1,7 @@
 {
   "case_id": "EC_017",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "late_delivery_logistics",
     "case_status": "action_required",
     "confidence": 1.0
@@ -17,23 +18,51 @@
     ],
     "payment_ids": [
       "dd6ee4d96f0f3cf1432c3b82818e0387:1"
+=======
+    "primary_issue": "late_delivery_seller",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0005a1a1728c9d785b8e2b08b904576c"
+    ],
+    "item_ids": [
+      "0005a1a1728c9d785b8e2b08b904576c:1"
+    ],
+    "seller_ids": [
+      "a416b6a846a11724393025641d4edd5e"
+    ],
+    "payment_ids": [
+      "0005a1a1728c9d785b8e2b08b904576c:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+=======
+        "cause_code": "SELLER_HANDOFF_AFTER_LIMIT",
+>>>>>>> 3410db2 (Pre code)
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
+<<<<<<< HEAD
         "party_type": "logistics_provider",
         "party_id": "LOGISTICS_PROVIDER"
+=======
+        "party_type": "seller",
+        "party_id": "a416b6a846a11724393025641d4edd5e"
+>>>>>>> 3410db2 (Pre code)
       }
     ]
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:dd6ee4d96f0f3cf1432c3b82818e0387",
     "item:dd6ee4d96f0f3cf1432c3b82818e0387:1",
     "payment:dd6ee4d96f0f3cf1432c3b82818e0387:1",
@@ -45,6 +74,20 @@
     "freight_total_brl": 12.76,
     "payment_total_brl": 72.76,
     "recommended_refund_brl": 12.76
+=======
+    "order:0005a1a1728c9d785b8e2b08b904576c",
+    "item:0005a1a1728c9d785b8e2b08b904576c:1",
+    "payment:0005a1a1728c9d785b8e2b08b904576c:1",
+    "seller:a416b6a846a11724393025641d4edd5e",
+    "policy:SELLER_HANDOFF_AFTER_LIMIT"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 145.95,
+    "freight_total_brl": 11.65,
+    "payment_total_brl": 157.6,
+    "recommended_refund_brl": 11.65
+>>>>>>> 3410db2 (Pre code)
   },
   "resolution_actions": [
     "refund_freight"

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "model": "qwen/qwen-2.5-7b-instruct",
   "parameter_size": "7B",
   "under_10b_parameters": true,
@@ -22,4 +23,18 @@
     "unsupported_late_claim": 9,
     "valid_split_payment": 9
   }
+=======
+  "model": {
+    "chatbot": "meta-llama/llama-3.2-3b-instruct:free",
+    "policy_agents": "none (deterministic rules)"
+  },
+  "parameter_size": {
+    "chatbot": "3B",
+    "policy_agents": "0B"
+  },
+  "framework": "Python standard library",
+  "runtime": "local Python 3",
+  "policy_version": "EC_POLICY_V1",
+  "processed_cases": 50
+>>>>>>> 3410db2 (Pre code)
 }

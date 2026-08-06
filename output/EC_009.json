@@ -1,6 +1,7 @@
 {
   "case_id": "EC_009",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "late_delivery_logistics",
     "case_status": "action_required",
     "confidence": 1.0
@@ -17,23 +18,47 @@
     ],
     "payment_ids": [
       "3aaee056441dcae251f360b1c71a7279:1"
+=======
+    "primary_issue": "unavailable_order_paid",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0010dedd556712d7bb69a19cb7bbd37a"
+    ],
+    "item_ids": [],
+    "seller_ids": [],
+    "payment_ids": [
+      "0010dedd556712d7bb69a19cb7bbd37a:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+=======
+        "cause_code": "ORDER_UNAVAILABLE_AFTER_PAYMENT",
+>>>>>>> 3410db2 (Pre code)
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
+<<<<<<< HEAD
         "party_type": "logistics_provider",
         "party_id": "LOGISTICS_PROVIDER"
+=======
+        "party_type": "platform",
+        "party_id": "OLIST_PLATFORM"
+>>>>>>> 3410db2 (Pre code)
       }
     ]
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:3aaee056441dcae251f360b1c71a7279",
     "item:3aaee056441dcae251f360b1c71a7279:1",
     "payment:3aaee056441dcae251f360b1c71a7279:1",
@@ -48,5 +73,20 @@
   },
   "resolution_actions": [
     "refund_freight"
+=======
+    "order:0010dedd556712d7bb69a19cb7bbd37a",
+    "payment:0010dedd556712d7bb69a19cb7bbd37a:1",
+    "policy:ORDER_UNAVAILABLE_AFTER_PAYMENT"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 0.0,
+    "freight_total_brl": 0.0,
+    "payment_total_brl": 111.12,
+    "recommended_refund_brl": 111.12
+  },
+  "resolution_actions": [
+    "issue_full_refund"
+>>>>>>> 3410db2 (Pre code)
   ]
 }

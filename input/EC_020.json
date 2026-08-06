@@ -3,8 +3,16 @@
   "opened_at": "2018-10-18T00:00:00-03:00",
   "customer_request": {
     "language": "vi",
+<<<<<<< HEAD
     "message": "Tôi thấy đơn hàng có nhiều dòng thanh toán và lo rằng mình bị thu trùng. Hãy đối soát giúp tôi.",
     "claimed_order_id": "96087ef44ca9abdbc4c372a3dd3c859f"
   },
   "policy_version": "EC_POLICY_V1"
+=======
+    "message": "Vui lòng kiểm tra đơn hàng, nguyên nhân và quyền lợi phù hợp.",
+    "claimed_order_id": "005e5166e99d1e4d0c4f808b0540ba94"
+  },
+  "policy_version": "EC_POLICY_V1",
+  "mock_case": true
+>>>>>>> 3410db2 (Pre code)
 }

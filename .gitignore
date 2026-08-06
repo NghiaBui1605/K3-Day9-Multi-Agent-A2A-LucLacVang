@@ -1,3 +1,9 @@
 .env
 __pycache__/
 *.pyc
+<<<<<<< HEAD
+=======
+frontend/node_modules/
+frontend/dist/
+frontend/.tmp/
+>>>>>>> 3410db2 (Pre code)

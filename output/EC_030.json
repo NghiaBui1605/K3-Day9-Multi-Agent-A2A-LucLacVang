@@ -1,6 +1,7 @@
 {
   "case_id": "EC_030",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "valid_split_payment",
     "case_status": "no_action",
     "confidence": 1.0
@@ -19,11 +20,30 @@
       "405be8487a7fde1db0bc31ad6b08050a:2",
       "405be8487a7fde1db0bc31ad6b08050a:1",
       "405be8487a7fde1db0bc31ad6b08050a:3"
+=======
+    "primary_issue": "late_delivery_logistics",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "00324b3eda39ba5ecce3945823e3594c"
+    ],
+    "item_ids": [
+      "00324b3eda39ba5ecce3945823e3594c:1"
+    ],
+    "seller_ids": [
+      "0dd184061fb0eaa7ca37932c68ab91c5"
+    ],
+    "payment_ids": [
+      "00324b3eda39ba5ecce3945823e3594c:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
         "rank": 1
       }
@@ -47,5 +67,34 @@
   },
   "resolution_actions": [
     "explain_valid_split_payment"
+=======
+        "cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "logistics_provider",
+        "party_id": "LOGISTICS_PROVIDER"
+      }
+    ]
+  },
+  "evidence_ids": [
+    "order:00324b3eda39ba5ecce3945823e3594c",
+    "item:00324b3eda39ba5ecce3945823e3594c:1",
+    "payment:00324b3eda39ba5ecce3945823e3594c:1",
+    "seller:0dd184061fb0eaa7ca37932c68ab91c5",
+    "policy:CARRIER_DELIVERED_AFTER_ESTIMATE"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 76.0,
+    "freight_total_brl": 34.07,
+    "payment_total_brl": 110.07,
+    "recommended_refund_brl": 34.07
+  },
+  "resolution_actions": [
+    "refund_freight"
+>>>>>>> 3410db2 (Pre code)
   ]
 }

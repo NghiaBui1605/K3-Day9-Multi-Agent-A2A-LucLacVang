@@ -1,6 +1,7 @@
 {
   "case_id": "EC_035",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "unsupported_late_claim",
     "case_status": "no_action",
     "confidence": 1.0
@@ -17,18 +18,42 @@
     ],
     "payment_ids": [
       "2478ddd1d1395639b71cf0d498d8dbf6:1"
+=======
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0016dfedd97fc2950e388d2971d718c7"
+    ],
+    "item_ids": [
+      "0016dfedd97fc2950e388d2971d718c7:1"
+    ],
+    "seller_ids": [
+      "a35124e2d763d7ca3fbe3b97d143200f"
+    ],
+    "payment_ids": [
+      "0016dfedd97fc2950e388d2971d718c7:2",
+      "0016dfedd97fc2950e388d2971d718c7:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "DELIVERY_WITHIN_ESTIMATE",
+=======
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
+>>>>>>> 3410db2 (Pre code)
         "rank": 1
       }
     ],
     "responsible_parties": []
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:2478ddd1d1395639b71cf0d498d8dbf6",
     "item:2478ddd1d1395639b71cf0d498d8dbf6:1",
     "payment:2478ddd1d1395639b71cf0d498d8dbf6:1",
@@ -43,5 +68,23 @@
   },
   "resolution_actions": [
     "reject_late_refund"
+=======
+    "order:0016dfedd97fc2950e388d2971d718c7",
+    "item:0016dfedd97fc2950e388d2971d718c7:1",
+    "payment:0016dfedd97fc2950e388d2971d718c7:2",
+    "payment:0016dfedd97fc2950e388d2971d718c7:1",
+    "seller:a35124e2d763d7ca3fbe3b97d143200f",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 49.75,
+    "freight_total_brl": 20.8,
+    "payment_total_brl": 70.55,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "explain_valid_split_payment"
+>>>>>>> 3410db2 (Pre code)
   ]
 }

@@ -1,6 +1,7 @@
 {
   "case_id": "EC_032",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "unsupported_late_claim",
     "case_status": "no_action",
     "confidence": 1.0
@@ -18,11 +19,30 @@
     ],
     "payment_ids": [
       "c4dad201936ed30eef3c94fafa59ed6e:1"
+=======
+    "primary_issue": "late_delivery_logistics",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "00335b686d693c7d72deeb12f8e89227"
+    ],
+    "item_ids": [
+      "00335b686d693c7d72deeb12f8e89227:1"
+    ],
+    "seller_ids": [
+      "f00e21b1e91a79653163b7fd8f293ff1"
+    ],
+    "payment_ids": [
+      "00335b686d693c7d72deeb12f8e89227:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "DELIVERY_WITHIN_ESTIMATE",
         "rank": 1
       }
@@ -45,5 +65,34 @@
   },
   "resolution_actions": [
     "reject_late_refund"
+=======
+        "cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "logistics_provider",
+        "party_id": "LOGISTICS_PROVIDER"
+      }
+    ]
+  },
+  "evidence_ids": [
+    "order:00335b686d693c7d72deeb12f8e89227",
+    "item:00335b686d693c7d72deeb12f8e89227:1",
+    "payment:00335b686d693c7d72deeb12f8e89227:1",
+    "seller:f00e21b1e91a79653163b7fd8f293ff1",
+    "policy:CARRIER_DELIVERED_AFTER_ESTIMATE"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 63.9,
+    "freight_total_brl": 16.89,
+    "payment_total_brl": 80.79,
+    "recommended_refund_brl": 16.89
+  },
+  "resolution_actions": [
+    "refund_freight"
+>>>>>>> 3410db2 (Pre code)
   ]
 }

@@ -1,6 +1,7 @@
 {
   "case_id": "EC_021",
   "assessment": {
+<<<<<<< HEAD
     "primary_issue": "canceled_order_paid",
     "case_status": "action_required",
     "confidence": 1.0
@@ -17,23 +18,51 @@
     ],
     "payment_ids": [
       "13d341318c77969f10d77e1382957542:1"
+=======
+    "primary_issue": "late_delivery_seller",
+    "case_status": "action_required",
+    "confidence": 0.99
+  },
+  "affected_entities": {
+    "order_ids": [
+      "0094bd07f49fed90209ffa62d1ef26d6"
+    ],
+    "item_ids": [
+      "0094bd07f49fed90209ffa62d1ef26d6:1"
+    ],
+    "seller_ids": [
+      "5670f4db5b62c43d542e1b2d56b0cf7c"
+    ],
+    "payment_ids": [
+      "0094bd07f49fed90209ffa62d1ef26d6:1"
+>>>>>>> 3410db2 (Pre code)
     ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
+<<<<<<< HEAD
         "cause_code": "ORDER_CANCELED_AFTER_PAYMENT",
+=======
+        "cause_code": "SELLER_HANDOFF_AFTER_LIMIT",
+>>>>>>> 3410db2 (Pre code)
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
+<<<<<<< HEAD
         "party_type": "platform",
         "party_id": "OLIST_PLATFORM"
+=======
+        "party_type": "seller",
+        "party_id": "5670f4db5b62c43d542e1b2d56b0cf7c"
+>>>>>>> 3410db2 (Pre code)
       }
     ]
   },
   "evidence_ids": [
+<<<<<<< HEAD
     "order:13d341318c77969f10d77e1382957542",
     "item:13d341318c77969f10d77e1382957542:1",
     "payment:13d341318c77969f10d77e1382957542:1",
@@ -48,5 +77,22 @@
   },
   "resolution_actions": [
     "issue_full_refund"
+=======
+    "order:0094bd07f49fed90209ffa62d1ef26d6",
+    "item:0094bd07f49fed90209ffa62d1ef26d6:1",
+    "payment:0094bd07f49fed90209ffa62d1ef26d6:1",
+    "seller:5670f4db5b62c43d542e1b2d56b0cf7c",
+    "policy:SELLER_HANDOFF_AFTER_LIMIT"
+  ],
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 11.53,
+    "freight_total_brl": 7.39,
+    "payment_total_brl": 18.92,
+    "recommended_refund_brl": 7.39
+  },
+  "resolution_actions": [
+    "refund_freight"
+>>>>>>> 3410db2 (Pre code)
   ]
 }
