@@ -4,8 +4,8 @@
 
 | Thong tin | Noi dung |
 | --- | --- |
-| Ho va ten | HoVaTen can cap nhat |
-| MSSV | 5SoCuoiMHV can cap nhat |
+| Ho va ten | Hoang Tuan Trung |
+| MSSV | 01807 |
 | Khoa/Lop | K3 |
 | Vai tro chinh | Pipeline, policy agent va verifier |
 | Ngay hoan thanh | 2026-08-05 |
@@ -77,7 +77,7 @@ python -m zipfile -l output.zip
 ## 6. Loi hoac blocker da xu ly
 
 - Trieu chung: file bao cao ban dau con template va noi dung khong khop bai Olist.
-- Buoc tai hien: mo `individual_5SoCuoiMHV_HoVaTen.md` va thay cau hoi ve Crossref/vector index.
+- Buoc tai hien: mo template bao cao ca nhan ban dau va thay cau hoi ve Crossref/vector index.
 - Nguyen nhan goc: template tu bai lab khac chua duoc cap nhat.
 - Cach xu ly: viet lai bao cao theo pipeline Olist A2A va artifact that.
 - Cach xac minh: doc lai file bao cao, doi chieu voi `scripts/resolve_cases.py`, `output/`, `trace.jsonl`.
@@ -95,5 +95,5 @@ Du lieu di tu `input/EC_*.json` vao Coordinator bang `claimed_order_id`. Tu khoa
 - [x] Bao cao khong chua `.env`, API key, token hoac secret.
 - [x] Bao cao nay khong phai ban sao nguyen van cua bao cao nhom hoac bao cao thanh vien khac.
 
-**Ho va ten:** HoVaTen can cap nhat
+**Ho va ten:** Hoang Tuan Trung
 **Ngay xac nhan:** 2026-08-05
