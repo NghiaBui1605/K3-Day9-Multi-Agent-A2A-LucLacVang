@@ -1,116 +1,161 @@
-# Báo cáo vai trò cá nhân — Day 9: Multi-Agent A2A
-
-> Trước khi nộp: điền họ tên, MSSV, lớp; đổi tên file theo mẫu yêu cầu và tự đánh dấu phần cam kết.
+# BÁO CÁO CÁ NHÂN — DAY 9: MULTI-AGENT A2A
 
 ## 1. Thông tin cá nhân
 
 | Thông tin | Nội dung |
 | --- | --- |
-| Họ và tên | [Điền họ và tên] |
-| MSSV | [Điền MSSV] |
-| Khóa/Lớp | [Điền khóa/lớp] |
-| Vai trò chính | Pipeline, Verifier và tích hợp hệ thống |
-| Ngày hoàn thành | 2026-08-05 |
+| Họ và tên | Trần Huy Hoàng |
+| Mã học viên | 01709 |
+| Khóa/Lớp | K3 |
+| Vai trò chính | Xây dựng pipeline xử lý tranh chấp, tích hợp OpenRouter Multi-Agent, Verifier và artifact nộp bài |
+| Ngày hoàn thành | 2026-08-06 |
 
-## 2. Vai trò và phạm vi công việc
+## 2. Bài toán nghiệp vụ
 
-### Phần việc sở hữu
+Hệ thống xử lý 50 khiếu nại thương mại điện tử từ `input/EC_001.json` đến `input/EC_050.json`. Mỗi khiếu nại chỉ chứa thông tin khách hàng cung cấp nên không thể được coi ngay là sự thật. Hệ thống phải đối chiếu mã đơn với dữ liệu nguồn Olist, xác định đúng vấn đề chính, bên chịu trách nhiệm, bằng chứng, số tiền và hành động xử lý.
 
-| Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao | Trạng thái |
-| --- | --- | --- | --- | --- |
-| Policy pipeline | `src/dispute_pipeline.py` | 50 case JSON và CSV Olist | 50 assessment JSON | Hoàn thành |
-| Verification | `verifier_agent`, `process_directory` | Assessment và facts từ CSV | Hard-gate schema, ID, tiền và policy | Hoàn thành |
-| CLI và audit | `src/main.py`, `logging/` | Thư mục input/data | Output, trace và metadata | Hoàn thành |
-| Chatbot integration | `src/chatbot.py`, `src/llm_multi_agent.py` | Case ID/order ID và tin nhắn | Phản hồi tiếng Việt có evidence | Hoàn thành |
+Sáu nhóm nghiệp vụ theo `EC_POLICY_V1` gồm:
 
-### Việc hỗ trợ ngoài phạm vi chính
+1. Đơn đã hủy nhưng đã thanh toán.
+2. Đơn không khả dụng nhưng đã thanh toán.
+3. Giao trễ do người bán bàn giao hàng sau hạn.
+4. Giao trễ do khâu logistics.
+5. Thanh toán tách hợp lệ.
+6. Khiếu nại giao trễ không được dữ liệu nguồn hỗ trợ.
 
-| Hoạt động | Thành viên/module được hỗ trợ | Kết quả |
+Kết quả mỗi case phải nhất quán trên sáu nhóm tiêu chí: đánh giá case, entity liên quan, nguyên nhân gốc, bằng chứng, tài chính và hành động xử lý. Đầu ra cuối cùng là đúng 50 file JSON trong thư mục `output/`, đồng thời phải đóng gói thành `output.zip` với đường dẫn nội bộ `output/EC_001.json` đến `output/EC_050.json`.
+
+## 3. Vai trò và phần việc của tôi
+
+Tôi phụ trách luồng xử lý từ dữ liệu nguồn đến kết quả đã xác minh, đồng thời hoàn thiện cơ chế gọi agent thật qua OpenRouter. Các phần việc chính thể hiện trực tiếp trong lịch sử nhánh `tranhuyhoang`:
+
+| Phần việc | File/Artifact | Kết quả |
 | --- | --- | --- |
-| Kiểm tra frontend | React/Vite console | Production build thành công, không có lỗi TypeScript |
-| Chuẩn bị artifact nộp | Nhóm | `output.zip` có đúng 50 JSON, không chứa file lạ |
+| Xử lý bộ 50 case chính thức | `src/dispute_pipeline.py`, `input/`, `output/` | Sinh đủ 50 kết quả từ cùng một pipeline, không viết riêng đáp án cho từng case |
+| Tạo và kiểm tra gói nộp | `output.zip` | Giữ đúng thư mục `output/` bên trong ZIP |
+| Chuẩn hóa bằng chứng thanh toán | `src/dispute_pipeline.py` | Sắp xếp payment ID theo thứ tự số trước khi giới hạn danh sách |
+| Đồng bộ confidence với kết quả đã kiểm chứng | `src/dispute_pipeline.py` | Confidence phản ánh kết luận deterministic đã qua Verifier |
+| Chạy agent thật qua OpenRouter | `src/chatbot.py`, `src/llm_multi_agent.py`, `src/main.py` | Dùng `qwen/qwen3-8b`, năm lượt gọi agent cho mỗi case |
+| Chọn evidence theo chính sách nghiệp vụ | `src/dispute_pipeline.py` | Chỉ giữ bằng chứng chứng minh trực tiếp điều kiện policy hoặc phương án tài chính |
+| Bổ sung kiểm thử hồi quy | `tests/test_dispute_pipeline.py` | Kiểm tra đủ 50 case, evidence giả, thứ tự payment, độ liên quan evidence và contract OpenRouter |
 
-## 3. Kết quả theo vai trò
+Các commit tiêu biểu của tôi gồm `ac34aaa`, `6835d0e`, `7f6f01a`, `e0514ff`, `f9f1eed` và `3a59903`.
 
-| Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao | Cách xác minh |
-| --- | --- | --- | --- |
-| Join order, item và payment | `Dataset.load`, `collect_facts` | Facts có nguồn gốc từ CSV | `python src/main.py --process` |
-| Áp dụng thứ tự ưu tiên EC_POLICY_V1 | `policy_agent` | Bao phủ đủ 6 primary issue | Phân bố 8/8/8/8/9/9 trên bộ input chính thức |
-| Tạo assessment | `build_assessment` | Entity, cause, party, evidence, financial và action | Đối soát lại với CSV |
-| Chặn output không hợp lệ | `verifier_agent` | Kiểm tra giới hạn, ID tồn tại, tổng tiền, refund và policy | Negative test với evidence giả bị từ chối |
-| Ghi audit có thể tái lập | `process_directory` | 50 output, 50 trace và metadata mới nhất | Đếm file/dòng sau mỗi lần chạy |
+## 4. Kiến trúc giải pháp
 
-Artifact cụ thể là bộ `output/EC_001.json` đến `output/EC_050.json`. Mỗi kết quả được dựng từ cùng một pipeline quyết định và được Verifier kiểm tra trước khi ghi xuống đĩa.
+```text
+Case JSON + CSV Olist
+        |
+        v
+Order & Seller Agent ----+
+Payment Agent -----------+--> Policy Agent --> Canonical Assessment
+Delivery Agent ----------+                         |
+                                                   v
+                                              Verifier Agent
+                                                   |
+                           +-----------------------+--------------------+
+                           |                                            |
+                           v                                            v
+                  output/EC_xxx.json                     OpenRouter specialists
+                  trace + metadata                      + Coordinator response
+```
 
-## 4. Giải thích phần kỹ thuật đã thực hiện
+Kiến trúc gồm hai lớp bổ trợ nhau:
 
-### Vấn đề cần giải quyết
+- **Lớp deterministic** đọc dữ liệu CSV, tính toán và áp dụng `EC_POLICY_V1`. Đây là nguồn sự thật cho issue, entity, root cause, refund và action. Cùng một dữ liệu đầu vào luôn tạo cùng một kết quả.
+- **Lớp OpenRouter Multi-Agent** dùng `qwen/qwen3-8b` (8.2B tham số, đáp ứng giới hạn không quá 10B). Các specialist nhận facts đã giới hạn theo domain và bàn giao kết quả cho Coordinator. LLM dùng để tổng hợp và giải thích, không được sửa kết luận canonical hay số tiền hoàn.
 
-Một lời khiếu nại không đủ để quyết định hoàn tiền. Pipeline phải nối đúng order với item/seller và payment, so sánh các mốc giao hàng, áp dụng policy theo thứ tự ưu tiên, rồi chỉ xuất bằng chứng có thể truy ngược về CSV.
+Theo `logging/metadata.json`, chế độ chạy hiện tại là `openrouter_multi_agent`, xử lý 50 case và thực hiện năm lượt gọi LLM cho mỗi case. Khi OpenRouter không khả dụng, báo cáo deterministic đã qua Verifier vẫn là kết quả có thể sử dụng; lỗi mạng không được phép làm thay đổi nghiệp vụ.
 
-### Cách triển khai
+## 5. Luồng hoạt động end-to-end
 
-Coordinator gọi ba specialist độc lập. Order & Seller Agent lấy trạng thái đơn cùng item/seller. Payment Agent dùng `Decimal` để cộng giá item, freight và payment, sau đó đối soát với sai số 0,10 BRL. Delivery Agent so sánh thời gian giao thực tế với estimated date và thời điểm carrier nhận hàng với shipping limit của từng seller.
+1. `src/main.py` đọc từng case, kiểm tra tên case, phiên bản policy và `claimed_order_id`.
+2. `Dataset.load` nạp các bảng order, item và payment; `collect_facts` nối dữ liệu theo `order_id`.
+3. `order_and_seller_agent` lấy trạng thái đơn, item và seller có liên quan.
+4. `payment_agent` dùng `Decimal` để tính tổng giá hàng, phí vận chuyển và tiền đã thanh toán, tránh sai số số thực.
+5. `delivery_agent` so sánh ngày giao thực tế với ngày dự kiến, đồng thời so sánh thời điểm carrier nhận hàng với `shipping_limit_date` của từng seller.
+6. `policy_agent` xét sáu policy theo thứ tự ưu tiên. Thứ tự này ngăn một đơn đã hủy nhưng có payment bị phân loại nhầm thành vấn đề giao hàng.
+7. `build_assessment` tạo issue, entity, root cause, evidence, financial resolution và action.
+8. `verifier_agent` kiểm tra schema, giới hạn số lượng, ID tồn tại trong dữ liệu nguồn, evidence không trùng, policy mapping, tổng tiền và refund.
+9. Chỉ kết quả vượt qua Verifier mới được ghi vào `output/`; trace và metadata được ghi vào `logging/` để kiểm toán.
+10. Ở chế độ `--llm-agents`, facts đã xác minh được chuyển qua các OpenRouter specialist và Coordinator để tạo phần giải thích có handoff rõ ràng.
 
-Policy Agent áp dụng lần lượt canceled, unavailable, late-by-seller, late-by-logistics, valid split payment và unsupported late claim. Thứ tự này tránh để một đơn đã hủy nhưng có payment bị phân loại nhầm thành vấn đề giao hàng. Verifier kiểm tra schema, giới hạn số lượng, tính duy nhất và sự tồn tại của entity/evidence ID, tổng tiền, refund, root cause và action trước khi Coordinator ghi file.
+## 6. Các quyết định nghiệp vụ quan trọng
 
-### Input, output và contract
+### 6.1. Không coi lời khiếu nại là dữ liệu sự thật
 
-| Thành phần | Mô tả |
-| --- | --- |
-| Input | `input/EC_001.json`…`EC_050.json`, policy `EC_POLICY_V1`, ba CSV orders/items/payments |
-| Output | Assessment JSON đúng schema trong `output/`, một trace JSONL mỗi case và metadata runtime |
-| Module phụ thuộc | Python standard library: `csv`, `json`, `decimal`, `datetime`, `pathlib` |
-| Module sử dụng output | Chatbot, frontend và bộ chấm bài |
-| Điều kiện lỗi cần xử lý | Thiếu order ID, order không tồn tại, policy sai version, thiếu/sai tên case, ID giả, sai total/refund hoặc case không phân loại được |
+Nội dung khách hàng chỉ giúp xác định đơn cần tra cứu. Trạng thái đơn, mốc giao hàng, payment và số tiền đều phải lấy từ CSV. Cách này tránh hallucination và không cho phép một lời mô tả thiếu chính xác làm thay đổi refund.
 
-### Cách xác minh
+### 6.2. Phân biệt entity liên quan và evidence chứng minh
+
+Một entity có quan hệ với đơn hàng chưa chắc là bằng chứng phù hợp cho kết luận. Tôi điều chỉnh lựa chọn evidence theo policy:
+
+- Mọi case luôn có `order:<id>` và `policy:<cause_code>`.
+- Case hủy hoặc không khả dụng sau thanh toán dùng payment evidence; item không chứng minh được trạng thái hủy/không khả dụng nên bị loại.
+- Seller evidence chỉ xuất hiện khi seller là bên chịu trách nhiệm.
+- Case giao trễ do seller chỉ chọn item thực sự vi phạm `shipping_limit_date`.
+- Case split payment ưu tiên các payment row để chứng minh tổng tiền được chia thành nhiều giao dịch hợp lệ.
+
+Đây là thay đổi trực tiếp nhắm vào chất lượng nghiệp vụ của tiêu chí “Bằng chứng”, thay vì tăng số lượng ID một cách cơ học.
+
+### 6.3. Xử lý tài chính có thể tái lập
+
+Tất cả số tiền được tính bằng `Decimal` và làm tròn theo cent. Payment ID được chuẩn hóa theo phần số trước khi chọn evidence, vì thứ tự đọc CSV không phải là một quy tắc nghiệp vụ. Refund phụ thuộc issue: hoàn tổng tiền cho đơn hủy/không khả dụng, hoàn phí vận chuyển cho lỗi giao trễ phù hợp, và không tự tạo refund cho split payment hợp lệ hoặc khiếu nại không được hỗ trợ.
+
+### 6.4. Kết hợp LLM và deterministic agent
+
+Nếu chỉ dùng LLM, câu trả lời linh hoạt nhưng có nguy cơ tạo sai ID, nguyên nhân hoặc số tiền. Nếu chỉ dùng deterministic pipeline, kết quả chính xác nhưng phần hội thoại và giải thích kém tự nhiên. Vì vậy tôi chọn kiến trúc lai: agent LLM chịu trách nhiệm phân tích theo vai trò và diễn đạt; deterministic policy cùng Verifier giữ quyền quyết định cuối cùng.
+
+## 7. Lỗi đã xử lý và bài học
+
+### Evidence hợp lệ về định dạng nhưng không liên quan nghiệp vụ
+
+- **Triệu chứng:** evidence có thể tồn tại trong dữ liệu nguồn nhưng không trực tiếp chứng minh policy đang áp dụng, làm tiêu chí bằng chứng thấp hơn các tiêu chí khác.
+- **Nguyên nhân:** logic cũ lấy nhiều entity theo một mẫu chung cho mọi issue.
+- **Cách sửa:** xây danh sách evidence riêng theo từng nhóm policy và thêm rule trong Verifier để từ chối seller evidence ở case không do seller, cũng như item evidence ở case hủy/không khả dụng.
+- **Kiểm thử:** `test_evidence_is_relevant_to_the_selected_business_policy` duyệt toàn bộ 50 input và kiểm tra các ràng buộc này.
+- **Bài học:** provenance chỉ trả lời “ID có thật hay không”; relevance mới trả lời “ID có chứng minh kết luận hay không”. Cả hai đều cần thiết.
+
+### Cấu trúc ZIP không đúng contract nộp bài
+
+- **Triệu chứng:** file JSON đầy đủ nhưng công cụ chấm không tìm thấy đúng đường dẫn yêu cầu.
+- **Nguyên nhân:** ZIP từng chỉ chứa JSON ở thư mục gốc.
+- **Cách sửa:** đóng gói và xác minh để archive giữ tiền tố `output/`.
+- **Bài học:** artifact contract là một phần của hệ thống, không chỉ là bước đóng gói sau cùng.
+
+## 8. Kiểm thử và cách tái hiện
+
+Các lệnh dùng để kiểm tra:
 
 ```powershell
 python -m compileall -q src
-python src/main.py --process
-cd frontend
-npm.cmd ci
-npm.cmd run build
+python -m unittest discover -s tests -v
+python src/main.py --process --llm-agents --workers 4
+python -m zipfile -l output.zip
 ```
 
-- **Kết quả mong đợi:** Python compile sạch, xử lý đúng 50 case và frontend build production thành công.
-- **Kết quả thực tế:** 50 case đã xử lý; Vite build thành công; kiểm tra độc lập không phát hiện entity ID hoặc total sai.
-- **Artifact/log:** `output/`, `logging/trace.jsonl`, `logging/metadata.json`, `output.zip`.
+Điều kiện đạt:
 
-## 5. Một quyết định kỹ thuật quan trọng
+- Toàn bộ unit test vượt qua, bao gồm test chạy 50 case và test Verifier từ chối evidence giả.
+- Có đúng `output/EC_001.json` đến `output/EC_050.json`.
+- Mỗi output chỉ tham chiếu entity/evidence tồn tại và phù hợp với policy.
+- `logging/metadata.json` ghi đúng model `qwen/qwen3-8b`, kích thước 8.2B, 50 case và năm lượt LLM/case.
+- `output.zip` chứa đúng 50 JSON dưới thư mục `output/`, không chứa secret hoặc file thừa.
 
-- **Bối cảnh:** Kết luận policy và số tiền cần độ chính xác tuyệt đối, trong khi LLM có thể tạo thông tin không có trong Olist.
-- **Các phương án đã cân nhắc:** để một LLM đọc toàn bộ dữ liệu và tự kết luận; hoặc dùng pipeline deterministic cho quyết định, chỉ dùng LLM cho diễn đạt/handoff hội thoại.
-- **Phương án đã chọn:** deterministic policy engine là nguồn sự thật; LLM 3B chỉ hỗ trợ giao tiếp và không có quyền sửa assessment.
-- **Lý do:** dễ tái lập, chi phí thấp, tuân thủ giới hạn 10B và ngăn hallucination làm thay đổi ID hoặc refund.
-- **Bằng chứng:** chạy lại pipeline tạo cùng 50 output; đối soát độc lập cho kết quả không có lỗi ID và financial total.
+## 9. Tự đánh giá
 
-## 6. Một lỗi hoặc blocker đã xử lý
+Phần đóng góp quan trọng nhất của tôi không phải là tạo thủ công 50 đáp án, mà là xây một quy trình tổng quát có thể giải thích và kiểm chứng. Pipeline tách rõ facts, policy, verification và presentation nên có thể sửa một quy tắc rồi chạy lại toàn bộ dữ liệu. Tôi cũng hiểu rằng điểm cao ở bài toán này không chỉ đến từ phân loại đúng: evidence phải thật sự liên quan, số tiền phải có quy tắc rõ ràng, action phải phù hợp với responsible party và artifact nộp bài phải đúng contract.
 
-- **Triệu chứng:** Verifier ban đầu chỉ kiểm tra prefix và số lượng evidence; một ID đúng định dạng nhưng không tồn tại vẫn có thể vượt qua.
-- **Bước tái hiện:** thay `order:<order_id>` bằng `order:not-a-real-order` rồi gọi Verifier.
-- **Nguyên nhân gốc:** validation chỉ kiểm tra cấu trúc, chưa so với facts được lấy từ CSV.
-- **Cách xử lý:** dựng tập ID hợp lệ từ order/item/payment/seller facts; kiểm tra membership, trùng lặp, evidence bắt buộc, total, refund và policy mapping.
-- **Cách xác minh sau khi sửa:** negative test trả `ValueError`; toàn bộ 50 output hợp lệ vẫn chạy qua.
-- **Điều học được:** schema validation không thay thế provenance validation; evidence phải vừa đúng định dạng vừa tồn tại trong nguồn.
+Giới hạn hiện tại là chất lượng phần diễn giải vẫn phụ thuộc model và dịch vụ OpenRouter. Tuy nhiên, giới hạn này không làm thay đổi kết luận nghiệp vụ vì mọi trường quan trọng đều bị khóa bởi canonical assessment và Verifier.
 
-## 7. Hiểu biết về luồng end-to-end
+## 10. Cam kết
 
-1. Case cung cấp `claimed_order_id`; Dataset dùng khóa này để lấy order, item/seller và payment rows từ CSV.
-2. Các specialist tạo facts theo từng domain và handoff cho Policy Agent; không agent nào tự tạo tracking hay refund event.
-3. Policy Agent chọn issue đầu tiên thỏa điều kiện theo thứ tự EC_POLICY_V1, tính responsible party, refund và action.
-4. Verifier đối chiếu output với facts nguồn và contract. Chỉ output đạt kiểm tra mới được ghi vào `output/` và trace mới được ghi vào `logging/trace.jsonl`.
-5. Chatbot nhận case ID hoặc order ID, gọi lại đúng pipeline này. LLM chỉ chuyển facts đã xác minh thành câu trả lời tiếng Việt; nếu API không khả dụng, hệ thống vẫn trả báo cáo deterministic.
+- [x] Báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
+- [x] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
+- [x] Các kết quả được nêu đều có thể đối chiếu bằng source code, test, output hoặc metadata trong repository.
+- [x] Báo cáo không chứa `.env`, API key, token hoặc secret.
+- [x] Nội dung được viết theo phần đóng góp của tôi, không tham chiếu hoặc sao chép báo cáo cá nhân của thành viên khác.
 
-## 8. Cam kết của thành viên
+**Họ và tên:** Trần Huy Hoàng
 
-- [ ] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
-- [ ] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
-- [ ] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
-- [ ] Báo cáo không chứa `.env`, API key, token hoặc secret.
-- [ ] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc thành viên khác.
-
-**Họ và tên:** [Điền họ và tên]
-
-**Ngày xác nhận:** [Điền ngày xác nhận]
+**Ngày xác nhận:** 2026-08-05
